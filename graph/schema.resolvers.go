@@ -8,17 +8,45 @@ import (
 	"context"
 	"fmt"
 
+	actions "github.com/Besufikad17/minab_events/graph/hasura/actions"
+	models "github.com/Besufikad17/minab_events/graph/hasura/models"
 	"github.com/Besufikad17/minab_events/graph/model"
+	helpers "github.com/Besufikad17/minab_events/graph/utils/helpers"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// Register is the resolver for the Register field.
+func (r *mutationResolver) Register(ctx context.Context, input model.NewUser) (*model.User, error) {
+	hashedPassword, err := helpers.Hash(input.Password)
+
+	if err != nil {
+		return nil, err
+	}
+
+	createUserInput := models.RegisterArgs{
+		First_name:   input.FirstName,
+		Last_name:    input.LastName,
+		Email:        input.Email,
+		Phone_number: input.PhoneNumber,
+		Password:     hashedPassword,
+	}
+
+	result, err := actions.Register(createUserInput)
+
+	if err != nil {
+		return nil, err
+	} else {
+		return &model.User{
+			FirstName:   *result.First_name,
+			LastName:    *result.Last_name,
+			Email:       *result.Email,
+			PhoneNumber: *result.Phone_number,
+		}, nil
+	}
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// Users is the resolver for the users field.
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented: Users - users"))
 }
 
 // Mutation returns MutationResolver implementation.
