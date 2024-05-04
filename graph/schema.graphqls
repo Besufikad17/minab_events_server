@@ -5,6 +5,7 @@ type User {
   email: String!
   phone_number: String!
   password: String!
+  token: String!
 }
 
 input NewUser {

@@ -8,10 +8,10 @@ import (
 	"context"
 	"fmt"
 
-	actions "github.com/Besufikad17/minab_events/graph/hasura/actions"
+	"github.com/Besufikad17/minab_events/graph/hasura/actions"
 	models "github.com/Besufikad17/minab_events/graph/hasura/models"
 	"github.com/Besufikad17/minab_events/graph/model"
-	helpers "github.com/Besufikad17/minab_events/graph/utils/helpers"
+	"github.com/Besufikad17/minab_events/graph/utils/helpers"
 )
 
 // Register is the resolver for the Register field.
@@ -31,16 +31,24 @@ func (r *mutationResolver) Register(ctx context.Context, input model.NewUser) (*
 	}
 
 	result, err := actions.Register(createUserInput)
+	if err != nil {
+		return nil, err
+	}
+
+	user := &model.User{
+		ID:          *&result.Id,
+		FirstName:   *result.First_name,
+		LastName:    *result.Last_name,
+		Email:       *result.Email,
+		PhoneNumber: *result.Phone_number,
+	}
+	token, err := helpers.CreateToken(*user)
+	user.Token = token
 
 	if err != nil {
 		return nil, err
 	} else {
-		return &model.User{
-			FirstName:   *result.First_name,
-			LastName:    *result.Last_name,
-			Email:       *result.Email,
-			PhoneNumber: *result.Phone_number,
-		}, nil
+		return user, nil
 	}
 }
 
