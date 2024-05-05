@@ -2,6 +2,11 @@
 
 package model
 
+type LoginInput struct {
+	LoginText string `json:"login_text"`
+	Password  string `json:"password"`
+}
+
 type Mutation struct {
 }
 

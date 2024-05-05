@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/Besufikad17/minab_events/graph/hasura/actions"
@@ -49,6 +50,38 @@ func (r *mutationResolver) Register(ctx context.Context, input model.NewUser) (*
 		return nil, err
 	} else {
 		return user, nil
+	}
+}
+
+// Login is the resolver for the Login field.
+func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.User, error) {
+	searchUser := models.SearchUserArgs{
+		LoginText: input.LoginText,
+	}
+
+	result, err := actions.SearchUser(searchUser)
+	if err != nil {
+		return nil, err
+	}
+
+	user := &model.User{
+		ID:          *&result.Id,
+		FirstName:   result.First_name,
+		LastName:    result.Last_name,
+		Email:       result.Email,
+		PhoneNumber: result.Phone_number,
+		Password:    result.Password,
+	}
+
+	if helpers.Compare(user.Password, input.Password) {
+		token, err := helpers.CreateToken(*user)
+		if err != nil {
+			return nil, err
+		}
+		user.Token = token
+		return user, nil
+	} else {
+		return nil, errors.New("Invalid credentials!!")
 	}
 }
 

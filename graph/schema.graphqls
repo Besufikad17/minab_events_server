@@ -16,10 +16,16 @@ input NewUser {
   password: String!
 }
 
+input LoginInput {
+  login_text: String!
+  password: String!
+}
+
 type Query {
-  users: [User!]!
+  users: [User!]! 
 }
 
 type Mutation {
   Register(input: NewUser!): User!
+  Login(input: LoginInput!): User!
 }
