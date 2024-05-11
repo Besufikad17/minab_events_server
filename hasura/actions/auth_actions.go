@@ -8,8 +8,9 @@ import (
 	"net/http"
 	"os"
 
-	models "github.com/Besufikad17/minab_events/graph/hasura/models"
-	constants "github.com/Besufikad17/minab_events/graph/utils/constants"
+	models "github.com/Besufikad17/minab_events/models"
+	constants "github.com/Besufikad17/minab_events/utils/constants"
+	helpers "github.com/Besufikad17/minab_events/utils/helpers"
 )
 
 func Register(args models.RegisterArgs) (response models.RegisterOutput, err error) {
@@ -28,12 +29,18 @@ func Register(args models.RegisterArgs) (response models.RegisterOutput, err err
 }
 
 func execute(variables models.RegisterArgs) (response models.RegisterGraphQLResponse, err error) {
+	hashedPassword, err := helpers.Hash(variables.Password)
+
+	if err != nil {
+		return
+	}
+
 	mapVariables := map[string]interface{}{
 		"first_name":   variables.First_name,
 		"last_name":    variables.Last_name,
 		"email":        variables.Email,
 		"phone_number": variables.Phone_number,
-		"password":     variables.Password,
+		"password":     hashedPassword,
 	}
 
 	reqBody := models.GraphQLRequest{

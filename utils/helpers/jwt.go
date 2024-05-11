@@ -2,7 +2,7 @@ package helpers
 
 import (
 	"errors"
-	models "github.com/Besufikad17/minab_events/graph/model"
+	models "github.com/Besufikad17/minab_events/models"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	"log"
