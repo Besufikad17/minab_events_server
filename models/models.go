@@ -33,11 +33,11 @@ type User struct {
 }
 
 type RegisterOutput struct {
-	Email        *string
-	First_name   *string
-	Id           int
-	Last_name    *string
-	Phone_number *string
+	Email        *string `json:"email"`
+	First_name   *string `json:"first_name"`
+	Id           int     `json:"id"`
+	Last_name    *string `json:"last_name"`
+	Phone_number *string `json:"phone_number"`
 }
 
 type RegisterArgs struct {

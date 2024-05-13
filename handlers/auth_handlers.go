@@ -10,6 +10,7 @@ import (
 )
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	println("/Register route called")
 	w.Header().Set("Content-Type", "application/json")
 
 	reqBody, err := io.ReadAll(r.Body)
