@@ -23,6 +23,11 @@ func SearchUser(args models.SearchUserArgs) (response models.SearchUserOutput, e
 		return
 	}
 
+	if len(hasuraResponse.Data.Users) == 0 {
+		err = errors.New("user not found")
+		return
+	}
+
 	response = hasuraResponse.Data.Users[0]
 	return
 }

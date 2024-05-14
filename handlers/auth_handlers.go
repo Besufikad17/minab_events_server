@@ -114,7 +114,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		)
 		w.Write(data)
 	} else {
-		http.Error(w, "Invalid credentials!!", http.StatusBadRequest)
+		errorObject := models.GraphQLError{
+			Message: "Invalid credentials!!",
+		}
+		errorBody, _ := json.Marshal(errorObject)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(errorBody)
 		return
 	}
 }
