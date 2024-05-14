@@ -10,11 +10,10 @@ import (
 
 	models "github.com/Besufikad17/minab_events/models"
 	constants "github.com/Besufikad17/minab_events/utils/constants"
-	helpers "github.com/Besufikad17/minab_events/utils/helpers"
 )
 
-func Register(args models.RegisterArgs) (response *models.RegisterOutput, err error) {
-	hasuraResponse, err := executeRegister(args)
+func SearchUser(args models.SearchUserArgs) (response models.SearchUserOutput, err error) {
+	hasuraResponse, err := execute(args)
 	if err != nil {
 		return
 	}
@@ -24,32 +23,21 @@ func Register(args models.RegisterArgs) (response *models.RegisterOutput, err er
 		return
 	}
 
-	response = &hasuraResponse.Data.Insert_users_one
+	response = hasuraResponse.Data.Users[0]
 	return
 }
 
-func executeRegister(variables models.RegisterArgs) (response *models.RegisterGraphQLResponse, err error) {
-	hashedPassword, err := helpers.Hash(variables.Password)
-
-	if err != nil {
-		return
-	}
-
+func execute(variables models.SearchUserArgs) (response *models.SearchUserGraphQLResponse, err error) {
 	mapVariables := map[string]interface{}{
-		"first_name":   variables.First_name,
-		"last_name":    variables.Last_name,
-		"email":        variables.Email,
-		"phone_number": variables.Phone_number,
-		"password":     hashedPassword,
+		"login_text": variables.Login_text,
 	}
-
 	reqBody := models.GraphQLRequest{
-		Query:     constants.Register,
+		Query:     constants.SearchUser,
 		Variables: mapVariables,
 	}
 	reqBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	hasuraURL := os.Getenv("HASURA_URL")
@@ -60,12 +48,12 @@ func executeRegister(variables models.RegisterArgs) (response *models.RegisterGr
 
 	respBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	err = json.Unmarshal(respBytes, &response)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	return
