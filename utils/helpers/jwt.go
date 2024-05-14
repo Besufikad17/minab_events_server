@@ -2,17 +2,26 @@ package helpers
 
 import (
 	"errors"
-	models "github.com/Besufikad17/minab_events/models"
-	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"time"
+
+	models "github.com/Besufikad17/minab_events/models"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/joho/godotenv"
 )
 
 var claims jwt.MapClaims
 
-func CreateToken(user models.User) (string, error) {
+func CreateToken(user models.User, rememberMe bool) (string, error) {
+	var expiryDate int64
+
+	if rememberMe {
+		expiryDate = time.Now().Add(time.Hour * 24 * 7).Unix()
+	} else {
+		expiryDate = time.Now().Add(time.Hour * 24).Unix()
+	}
+
 	err := godotenv.Load(".env")
 
 	if err != nil {
@@ -28,7 +37,7 @@ func CreateToken(user models.User) (string, error) {
 			"lastName":    user.LastName,
 			"email":       user.Email,
 			"phoneNumber": user.PhoneNumber,
-			"exp":         time.Now().Add(time.Hour * 24).Unix(),
+			"exp":         expiryDate,
 		})
 	tokenString, err := token.SignedString([]byte(jwtSecret))
 	if err != nil {

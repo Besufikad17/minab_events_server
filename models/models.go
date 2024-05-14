@@ -61,8 +61,9 @@ type SearchUserOutput struct {
 	Phone_number string `json:"phone_number"`
 }
 type LoginArgs struct {
-	Login_text string
-	Password   string
+	Login_text  string
+	Password    string
+	Remember_me bool
 }
 type RegisterArgs struct {
 	First_name   string
@@ -70,6 +71,7 @@ type RegisterArgs struct {
 	Email        string
 	Phone_number string
 	Password     string
+	Remember_me  bool
 }
 type SearchUserArgs struct {
 	Login_text string

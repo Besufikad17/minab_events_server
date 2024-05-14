@@ -48,7 +48,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		LastName:    *result.Last_name,
 		Email:       *result.Email,
 		PhoneNumber: *result.Phone_number,
-	})
+	}, actionPayload.Input.Remember_me)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -79,6 +79,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	println(actionPayload.Input.Remember_me)
+
 	result, err := actions.SearchUser(models.SearchUserArgs{
 		Login_text: actionPayload.Input.Login_text,
 	})
@@ -100,7 +102,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			LastName:    result.Last_name,
 			Email:       result.Email,
 			PhoneNumber: result.Phone_number,
-		})
+		}, actionPayload.Input.Remember_me)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
