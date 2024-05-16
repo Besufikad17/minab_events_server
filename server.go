@@ -23,6 +23,7 @@ func main() {
 
 	mux.HandleFunc("/Register", handlers.RegisterHandler)
 	mux.HandleFunc("/Login", handlers.LoginHandler)
+	mux.HandleFunc("/events/Create", handlers.CreateEventHandler)
 
 	err = http.ListenAndServe(":5000", mux)
 	log.Fatal(err)

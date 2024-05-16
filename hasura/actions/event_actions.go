@@ -12,8 +12,8 @@ import (
 	constants "github.com/Besufikad17/minab_events/utils/constants"
 )
 
-func SearchUser(args models.SearchUserArgs) (response models.SearchUserOutput, err error) {
-	hasuraResponse, err := execute(args)
+func CreateEvent(args map[string]interface{}) (response models.CreateEventOutput, err error) {
+	hasuraResponse, err := executeCreateEvent(args)
 	if err != nil {
 		return
 	}
@@ -23,26 +23,19 @@ func SearchUser(args models.SearchUserArgs) (response models.SearchUserOutput, e
 		return
 	}
 
-	if len(hasuraResponse.Data.Users) == 0 {
-		err = errors.New("user not found")
-		return
-	}
-
-	response = hasuraResponse.Data.Users[0]
+	response = hasuraResponse.Data.Insert_events_one
 	return
 }
+func executeCreateEvent(variables map[string]interface{}) (response *models.CreateEventGraphQLResponse, err error) {
 
-func execute(variables models.SearchUserArgs) (response *models.SearchUserGraphQLResponse, err error) {
-	mapVariables := map[string]interface{}{
-		"login_text": variables.Login_text,
-	}
 	reqBody := models.GraphQLRequest{
-		Query:     constants.SearchUser,
-		Variables: mapVariables,
+		Query:     constants.CreateEvent,
+		Variables: variables,
 	}
+
 	reqBytes, err := json.Marshal(reqBody)
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	hasuraURL := os.Getenv("HASURA_URL")
@@ -55,7 +48,6 @@ func execute(variables models.SearchUserArgs) (response *models.SearchUserGraphQ
 	if err != nil {
 		return nil, err
 	}
-
 	err = json.Unmarshal(respBytes, &response)
 	if err != nil {
 		return nil, err
