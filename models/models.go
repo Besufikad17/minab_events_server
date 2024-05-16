@@ -14,6 +14,11 @@ type CreateLocationActionPayload struct {
 	Input            CreateLocationArgs     `json:"input"`
 }
 
+type CreateTagActionPayload struct {
+	SessionVariables map[string]interface{} `json:"session_variables"`
+	Input            CreateTagArgs          `json:"input"`
+}
+
 type LoginActionPayload struct {
 	SessionVariables map[string]interface{} `json:"session_variables"`
 	Input            LoginArgs              `json:"input"`
@@ -72,6 +77,11 @@ type CreateLocationOutput struct {
 	Venue string
 }
 
+type CreateTagOutput struct {
+	Id   int
+	Name string
+}
+
 type RegisterOutput struct {
 	Email        *string `json:"email"`
 	First_name   *string `json:"first_name"`
@@ -108,6 +118,10 @@ type CreateLocationArgs struct {
 	Venue string
 }
 
+type CreateTagArgs struct {
+	Event_id int
+	Name     string
+}
 type LoginArgs struct {
 	Login_text  string
 	Password    string
@@ -140,6 +154,10 @@ type CreateLocationGraphQLData struct {
 	Insert_locations_one CreateLocationOutput `json:"insert_locations_one"`
 }
 
+type CreateTagGraphQLData struct {
+	Insert_tags_one CreateTagOutput `json:"insert_tags_one"`
+}
+
 type RegisterGraphQLData struct {
 	Insert_users_one RegisterOutput `json:"insert_users_one"`
 }
@@ -156,6 +174,11 @@ type CreateEventGraphQLResponse struct {
 type CreateLocationGraphQLResponse struct {
 	Data   CreateLocationGraphQLData `json:"data,omitempty"`
 	Errors []GraphQLError            `json:"errors,omitempty"`
+}
+
+type CreateTagGraphQLResponse struct {
+	Data   CreateTagGraphQLData `json:"data,omitempty"`
+	Errors []GraphQLError       `json:"errors,omitempty"`
 }
 
 type RegisterGraphQLResponse struct {

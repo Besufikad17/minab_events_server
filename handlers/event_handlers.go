@@ -61,6 +61,23 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for _, tag := range actionPayload.Input.Tags {
+		_, err = actions.CreateTag(models.CreateTagArgs{
+			Name:     tag,
+			Event_id: result.Id,
+		})
+
+		if err != nil {
+			errorObject := models.GraphQLError{
+				Message: err.Error(),
+			}
+			errorBody, _ := json.Marshal(errorObject)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(errorBody)
+			return
+		}
+	}
+
 	data, _ := json.Marshal(result)
 	w.Write(data)
 }
