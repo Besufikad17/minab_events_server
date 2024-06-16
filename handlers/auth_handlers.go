@@ -79,8 +79,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	println(actionPayload.Input.Remember_me)
-
 	result, err := actions.SearchUser(models.SearchUserArgs{
 		Login_text: actionPayload.Input.Login_text,
 	})

@@ -21,8 +21,11 @@ func main() {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 	})
 
+	// auth handlers
 	mux.HandleFunc("/Register", handlers.RegisterHandler)
 	mux.HandleFunc("/Login", handlers.LoginHandler)
+
+	// event handlers
 	mux.HandleFunc("/events/Create", handlers.CreateEventHandler)
 
 	err = http.ListenAndServe(":5000", mux)

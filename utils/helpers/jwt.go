@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	models "github.com/Besufikad17/minab_events/models"
@@ -38,6 +39,11 @@ func CreateToken(user models.User, rememberMe bool) (string, error) {
 			"email":       user.Email,
 			"phoneNumber": user.PhoneNumber,
 			"exp":         expiryDate,
+			"https://hasura.io/jwt/claims": map[string]interface{}{
+				"x-hasura-default-role":  "user",
+				"x-hasura-allowed-roles": [2]string{"user", "admin"},
+				"x-hasura-user-id":       strconv.Itoa(user.ID),
+			},
 		})
 	tokenString, err := token.SignedString([]byte(jwtSecret))
 	if err != nil {
