@@ -12,8 +12,8 @@ import (
 	constants "github.com/Besufikad17/minab_events/utils/constants"
 )
 
-func CreateTag(args models.CreateTagArgs) (response models.CreateTagOutput, err error) {
-	hasuraResponse, err := executeCreateTag(args)
+func CreateTag(args models.CreateTagArgs, token string) (response models.CreateTagOutput, err error) {
+	hasuraResponse, err := executeCreateTag(args, token)
 
 	if err != nil {
 		return
@@ -28,7 +28,7 @@ func CreateTag(args models.CreateTagArgs) (response models.CreateTagOutput, err 
 	return
 }
 
-func executeCreateTag(variables models.CreateTagArgs) (response *models.CreateTagGraphQLResponse, err error) {
+func executeCreateTag(variables models.CreateTagArgs, token string) (response *models.CreateTagGraphQLResponse, err error) {
 	reqBody := models.GraphQLRequest{
 		Query: constants.CreateTag,
 		Variables: map[string]interface{}{
@@ -43,7 +43,11 @@ func executeCreateTag(variables models.CreateTagArgs) (response *models.CreateTa
 	}
 
 	hasuraUrl := os.Getenv("HASURA_URL")
-	resp, err := http.Post(hasuraUrl, "application/json", bytes.NewBuffer(reqBytes))
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", hasuraUrl, bytes.NewBuffer(reqBytes))
+	req.Header.Add("Authorization", token)
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}

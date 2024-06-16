@@ -12,8 +12,8 @@ import (
 	constants "github.com/Besufikad17/minab_events/utils/constants"
 )
 
-func CreateEvent(args map[string]interface{}) (response models.CreateEventOutput, err error) {
-	hasuraResponse, err := executeCreateEvent(args)
+func CreateEvent(args map[string]interface{}, token string) (response models.CreateEventOutput, err error) {
+	hasuraResponse, err := executeCreateEvent(args, token)
 	if err != nil {
 		return
 	}
@@ -26,7 +26,7 @@ func CreateEvent(args map[string]interface{}) (response models.CreateEventOutput
 	response = hasuraResponse.Data.Insert_events_one
 	return
 }
-func executeCreateEvent(variables map[string]interface{}) (response *models.CreateEventGraphQLResponse, err error) {
+func executeCreateEvent(variables map[string]interface{}, token string) (response *models.CreateEventGraphQLResponse, err error) {
 
 	reqBody := models.GraphQLRequest{
 		Query:     constants.CreateEvent,
@@ -39,7 +39,11 @@ func executeCreateEvent(variables map[string]interface{}) (response *models.Crea
 	}
 
 	hasuraURL := os.Getenv("HASURA_URL")
-	resp, err := http.Post(hasuraURL, "application/json", bytes.NewBuffer(reqBytes))
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", hasuraURL, bytes.NewBuffer(reqBytes))
+	req.Header.Add("Authorization", token)
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}

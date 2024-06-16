@@ -29,7 +29,7 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 	location, err := actions.CreateLocation(models.CreateLocationArgs{
 		City:  actionPayload.Input.City,
 		Venue: actionPayload.Input.Venue,
-	})
+	}, r.Header.Get("Authorization"))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -48,7 +48,7 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		"enterance_fee": actionPayload.Input.Enterance_fee,
 	}
 
-	result, err := actions.CreateEvent(mapVariables)
+	result, err := actions.CreateEvent(mapVariables, r.Header.Get("Authorization"))
 	fmt.Println(actionPayload.Input.Tags)
 
 	if err != nil {
@@ -65,7 +65,7 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		_, err = actions.CreateTag(models.CreateTagArgs{
 			Name:     tag,
 			Event_id: result.Id,
-		})
+		}, r.Header.Get("Authorization"))
 
 		if err != nil {
 			errorObject := models.GraphQLError{

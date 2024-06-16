@@ -12,8 +12,8 @@ import (
 	constants "github.com/Besufikad17/minab_events/utils/constants"
 )
 
-func CreateLocation(args models.CreateLocationArgs) (response models.CreateLocationOutput, err error) {
-	hasuraResponse, err := executeCreateLocation(args)
+func CreateLocation(args models.CreateLocationArgs, token string) (response models.CreateLocationOutput, err error) {
+	hasuraResponse, err := executeCreateLocation(args, token)
 
 	if err != nil {
 		return
@@ -28,7 +28,7 @@ func CreateLocation(args models.CreateLocationArgs) (response models.CreateLocat
 	return
 }
 
-func executeCreateLocation(variables models.CreateLocationArgs) (response *models.CreateLocationGraphQLResponse, err error) {
+func executeCreateLocation(variables models.CreateLocationArgs, token string) (response *models.CreateLocationGraphQLResponse, err error) {
 	reqBody := models.GraphQLRequest{
 		Query: constants.CreateLocation,
 		Variables: map[string]interface{}{
@@ -42,7 +42,11 @@ func executeCreateLocation(variables models.CreateLocationArgs) (response *model
 	}
 
 	hasuraURL := os.Getenv("HASURA_URL")
-	resp, err := http.Post(hasuraURL, "application/json", bytes.NewBuffer(reqBytes))
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", hasuraURL, bytes.NewBuffer(reqBytes))
+	req.Header.Add("Authorization", token)
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
