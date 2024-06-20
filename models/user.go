@@ -1,5 +1,29 @@
 package models
 
+type GetUserByIdActionPayload struct {
+	SessionVariables map[string]interface{} `json:"session_variables"`
+	Input            GetUserByIdArgs        `json:"input"`
+}
+
+type GetUserByIdArgs struct {
+	Id int
+}
+
+type GetUserByIdGraphQLData struct {
+	Users []GetUserByIdOutput `json:"users"`
+}
+
+type GetUserByIdOutput struct {
+	Email      string
+	First_name string
+	Last_name  string
+}
+
+type GetUserByIdGraphQLResponse struct {
+	Data   GetUserByIdGraphQLData `json:"data,omitempty"`
+	Errors []GraphQLError         `json:"errors,omitempty"`
+}
+
 type NewUser struct {
 	FirstName   string `json:"first_name"`
 	LastName    string `json:"last_name"`

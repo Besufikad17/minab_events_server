@@ -38,3 +38,7 @@ type CreateEventOutput struct {
 	Start_date    string  `json:"start_date"`
 	Title         string  `json:"title"`
 }
+
+type ReserveEventActionPayload struct {
+	UserID int `json:"user_id"`
+}

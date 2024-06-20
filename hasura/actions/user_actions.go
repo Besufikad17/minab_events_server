@@ -63,3 +63,51 @@ func execute(variables models.SearchUserArgs) (response *models.SearchUserGraphQ
 
 	return
 }
+
+func GetUserById(args map[string]interface{}) (response models.GetUserByIdOutput, err error) {
+
+	hasuraResponse, err := executeGetUserById(args)
+
+	if err != nil {
+		return
+	}
+
+	if len(hasuraResponse.Errors) != 0 {
+		err = errors.New(hasuraResponse.Errors[0].Message)
+		return
+	}
+
+	response = hasuraResponse.Data.Users[0]
+	return
+
+}
+
+func executeGetUserById(variables map[string]interface{}) (response models.GetUserByIdGraphQLResponse, err error) {
+	reqBody := models.GraphQLRequest{
+		Query:     constants.GetUserById,
+		Variables: variables,
+	}
+
+	reqBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		return
+	}
+
+	hasuraUrl := os.Getenv("HASURA_URL")
+	resp, err := http.Post(hasuraUrl, "application/json", bytes.NewBuffer(reqBytes))
+	if err != nil {
+		return
+	}
+
+	respBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	err = json.Unmarshal(respBytes, &response)
+	if err != nil {
+		return
+	}
+
+	return
+}
