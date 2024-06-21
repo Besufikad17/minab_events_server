@@ -68,7 +68,7 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 	t.Execute(&body, struct {
 		Name string
 	}{
-		Name: "Besufikad Micheal",
+		Name: user.First_name + " " + user.Last_name,
 	})
 
 	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, body.Bytes())
