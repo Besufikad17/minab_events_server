@@ -1,6 +1,10 @@
 package helpers
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"crypto/sha1"
+	"encoding/base64"
+	"golang.org/x/crypto/bcrypt"
+)
 
 func Hash(password string) (string, error) {
 	pwd := []byte(password)
@@ -15,4 +19,11 @@ func Hash(password string) (string, error) {
 func Compare(hashedPassword string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	return err == nil
+}
+
+func Sign(bv []byte) string {
+	hasher := sha1.New()
+	hasher.Write(bv)
+	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	return sha
 }

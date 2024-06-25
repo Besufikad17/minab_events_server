@@ -1,6 +1,8 @@
 package constants
 
-var CreateEvent string = "mutation CreateEvent(   $title: String!,   $description: String!,  $user_id: Int!,   $category_id: Int!,   $location_id: Int!,   $image: String!,   $enterance_fee: float8!,   $start_date: date!,   $end_date: date!, ) { 	insert_events_one(     object: {       title: $title,        description: $description,        user_id: $user_id,  category_id: $category_id,       location_id: $location_id,       image: $image,       enterance_fee: $enterance_fee,       start_date: $start_date,       end_date: $end_date,     }   ) {     id     title     description     image     enterance_fee     start_date     end_date     location {       city       venue     }     category {       name     }     tags {       name     }   }   }"
+var CreateEvent string = "mutation CreateEvent($title: String!, $description: String!, $user_id: Int!, $category_id: Int!, $location_id: Int!, $thumbnail: String!, $enterance_fee: float8!, $start_date: date!, $end_date: date!) { insert_events_one(object: {title: $title, description: $description, user_id: $user_id, category_id: $category_id, location_id: $location_id, thumbnail: $thumbnail, enterance_fee: $enterance_fee, start_date: $start_date, end_date: $end_date}) { id title description thumbnail enterance_fee start_date end_date location { city venue } category { name } tags { name } } }"
+
+var CreateImage string = "mutation CreateImage(  	$event_id: Int!,   $url: String! ) {   insert_images_one(     object: {     	event_id: $event_id,       url: $url     }   ) {     id     url   } }"
 
 var CreateLocation string = "mutation CreateLocation($city: String!, $venue: String!) {   insert_locations_one(object: { city: $city, venue: $venue }) {     id     city     venue   } }"
 

@@ -13,7 +13,7 @@ type CreateEventArgs struct {
 	Location_id   int
 	City          string
 	Venue         string
-	Image         string
+	Images        []string
 	Enterance_fee float32
 	Start_date    string
 	End_date      string
@@ -34,7 +34,7 @@ type CreateEventOutput struct {
 	End_date      string  `json:"end_date"`
 	Enterance_fee float32 `json:"enterance_fee"`
 	Id            int     `json:"id"`
-	Image         string  `json:"image"`
+	Thumbnail     string  `json:"thumbnail"`
 	Start_date    string  `json:"start_date"`
 	Title         string  `json:"title"`
 }

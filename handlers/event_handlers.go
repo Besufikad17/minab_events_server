@@ -39,7 +39,7 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 	mapVariables := map[string]interface{}{
 		"title":         actionPayload.Input.Title,
 		"description":   actionPayload.Input.Description,
-		"image":         actionPayload.Input.Image,
+		"thumbnail":     actionPayload.Input.Images[0],
 		"user_id":       actionPayload.Input.User_id,
 		"category_id":   actionPayload.Input.Category_id,
 		"location_id":   location.Id,
@@ -61,6 +61,23 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for _, image := range actionPayload.Input.Images {
+		_, err := actions.CreateImage(models.CreateImageArgs{
+			Event_id: result.Id,
+			Url:      image,
+		}, r.Header.Get("Authorization"))
+
+		if err != nil {
+			errorObject := models.GraphQLError{
+				Message: err.Error(),
+			}
+			errorBody, _ := json.Marshal(errorObject)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(errorBody)
+			return
+		}
+	}
+
 	for _, tag := range actionPayload.Input.Tags {
 		_, err = actions.CreateTag(models.CreateTagArgs{
 			Name:     tag,
@@ -68,6 +85,7 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		}, r.Header.Get("Authorization"))
 
 		if err != nil {
+			println(err)
 			errorObject := models.GraphQLError{
 				Message: err.Error(),
 			}
