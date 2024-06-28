@@ -8,6 +8,8 @@ type CreateLocationActionPayload struct {
 type CreateLocationArgs struct {
 	City  string
 	Venue string
+	Lat   float32
+	Lng   float32
 }
 
 type CreateLocationGraphQLData struct {

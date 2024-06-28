@@ -34,6 +34,8 @@ func executeCreateLocation(variables models.CreateLocationArgs, token string) (r
 		Variables: map[string]interface{}{
 			"city":  variables.City,
 			"venue": variables.Venue,
+			"lat":   variables.Lat,
+			"lng":   variables.Lng,
 		},
 	}
 	reqBytes, err := json.Marshal(reqBody)

@@ -13,6 +13,8 @@ type CreateEventArgs struct {
 	Location_id   int
 	City          string
 	Venue         string
+	Lat           float32
+	Lng           float32
 	Images        []string
 	Enterance_fee float32
 	Start_date    string

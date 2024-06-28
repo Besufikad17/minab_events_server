@@ -29,6 +29,8 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 	location, err := actions.CreateLocation(models.CreateLocationArgs{
 		City:  actionPayload.Input.City,
 		Venue: actionPayload.Input.Venue,
+		Lat:   actionPayload.Input.Lat,
+		Lng:   actionPayload.Input.Lng,
 	}, r.Header.Get("Authorization"))
 
 	if err != nil {

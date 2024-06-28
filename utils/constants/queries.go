@@ -4,7 +4,7 @@ var CreateEvent string = "mutation CreateEvent($title: String!, $description: St
 
 var CreateImage string = "mutation CreateImage(  	$event_id: Int!,   $url: String! ) {   insert_images_one(     object: {     	event_id: $event_id,       url: $url     }   ) {     id     url   } }"
 
-var CreateLocation string = "mutation CreateLocation($city: String!, $venue: String!) {   insert_locations_one(object: { city: $city, venue: $venue }) {     id     city     venue   } }"
+var CreateLocation string = "mutation CreateLocation($city: String!, $venue: String!,  $lat: float8!, $lng: float8!) {   insert_locations_one(object: { city: $city, venue: $venue, latitude: $lat, longtiude: $lng }) {     id     city     venue   } }"
 
 var CreateTag string = "mutation CreateTag(  	$event_id: Int!,   $name: String! ) {   insert_tags_one(object: {event_id: $event_id, name: $name}) {       id     	name   } }"
 
