@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	handlers "github.com/Besufikad17/minab_events/handlers"
+	"github.com/Besufikad17/minab_events/handlers"
 	"github.com/Besufikad17/minab_events/hasura/events"
 	"github.com/joho/godotenv"
 )
@@ -29,6 +29,12 @@ func main() {
 	// event handlers
 	mux.HandleFunc("/events/Create", handlers.CreateEventHandler)
 	mux.HandleFunc("/events/Reserve", events.NotifyUser)
+
+	// image handlers
+	mux.HandleFunc("/image/Add", handlers.AddImagesHandler)
+
+	// file serving
+	mux.HandleFunc("/images/", handlers.ServeImage)
 
 	err = http.ListenAndServe(":5000", mux)
 	log.Fatal(err)

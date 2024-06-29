@@ -2,23 +2,38 @@ package helpers
 
 import (
 	"encoding/base64"
+	"errors"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 )
 
-func saveImageToFile(input string) (string, error) {
-	dec, err := base64.StdEncoding.DecodeString(string(input))
+func isImage(mimeType string) bool {
+	return mimeType == "image/jpeg" || mimeType == "image/jpg" || mimeType == "image/png" || mimeType == "image/gif" || mimeType == "image/webp"
+}
+
+func SaveImageToFile(input string) (*string, error) {
+	b64data := input[strings.IndexByte(input, ',')+1:]
+	dec, err := base64.StdEncoding.DecodeString(b64data)
 	if err != nil {
 		panic(err)
 	}
 
-	dir, err := filepath.Abs("../../public/uploads")
+	dir, err := filepath.Abs("public/uploads")
 	if err != nil {
 		panic(err)
 	}
 
-	file, err := os.Create(filepath.Join(dir, time.Now()))
+	mimeType := strings.Split(strings.Split(input, ";")[0], ":")[1]
+
+	if !isImage(mimeType) {
+		return nil, errors.New("INVALID FILE TYPE")
+	}
+
+	fileName := strconv.FormatInt(time.Now().UnixMilli(), 10) + "." + strings.Split(mimeType, "/")[1]
+	file, err := os.Create(filepath.Join(dir, fileName))
 	if err != nil {
 		panic(err)
 	}
@@ -32,9 +47,10 @@ func saveImageToFile(input string) (string, error) {
 		panic(err)
 	}
 
-	image, err := filepath.Abs(filepath.Join(dir, input))
+	_, err = filepath.Abs(filepath.Join(dir, fileName))
 	if err != nil {
 		panic(err)
 	}
-	return image, err
+
+	return &fileName, err
 }

@@ -8,6 +8,7 @@ import (
 
 	actions "github.com/Besufikad17/minab_events/hasura/actions"
 	models "github.com/Besufikad17/minab_events/models"
+	helpers "github.com/Besufikad17/minab_events/utils/helpers"
 )
 
 func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
@@ -64,9 +65,21 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, image := range actionPayload.Input.Images {
-		_, err := actions.CreateImage(models.CreateImageArgs{
+		fileName, err := helpers.SaveImageToFile(image)
+
+		if err != nil {
+			errorObject := models.GraphQLError{
+				Message: err.Error(),
+			}
+			errorBody, _ := json.Marshal(errorObject)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(errorBody)
+			return
+		}
+
+		_, err = actions.CreateImage(models.CreateImageArgs{
 			Event_id: result.Id,
-			Url:      image,
+			Url:      "http://localhost:5000/images/" + *fileName,
 		}, r.Header.Get("Authorization"))
 
 		if err != nil {
