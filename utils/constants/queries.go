@@ -1,8 +1,10 @@
 package constants
 
-var CreateEvent string = "mutation CreateEvent($title: String!, $description: String!, $user_id: Int!, $category_id: Int!, $location_id: Int!, $thumbnail: String!, $enterance_fee: float8!, $start_date: date!, $end_date: date!) { insert_events_one(object: {title: $title, description: $description, user_id: $user_id, category_id: $category_id, location_id: $location_id, thumbnail: $thumbnail, enterance_fee: $enterance_fee, start_date: $start_date, end_date: $end_date}) { id title description thumbnail enterance_fee start_date end_date location { city venue } category { name } tags { name } } }"
+var CreateEvent string = "mutation CreateEvent($title: String!, $description: String!, $user_id: Int!, $category_id: Int!, $location_id: Int!, $thumbnail: String!, $start_date: date!, $end_date: date!) { insert_events_one(object: {title: $title, description: $description, user_id: $user_id, category_id: $category_id, location_id: $location_id, thumbnail: $thumbnail, start_date: $start_date, end_date: $end_date}) { id title description thumbnail start_date end_date location { city venue } category { name } tags { name } } }"
 
 var AddImages string = "mutation AddImages(   $images: [images_insert_input!]! ) {   insert_images(     objects: $images   ) {     affected_rows   } }"
+
+var AddTicket string = "mutation AddTicket( 	$event_id: Int!,   $ticket_type: String!,   $description: String!,   $price: float8! ) {   insert_tickets_one(     object: {       event_id: $event_id,       ticket_type: $ticket_type,       description: $description,       price: $price     }   ) {     id   } }"
 
 var CreateImage string = "mutation CreateImage(  	$event_id: Int!,   $url: String! ) {   insert_images_one(     object: {     	event_id: $event_id,       url: $url     }   ) {     id     url   } }"
 

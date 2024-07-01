@@ -39,16 +39,16 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	thumbnail, err := helpers.SaveImageToFile(actionPayload.Input.Images[0])
 	mapVariables := map[string]interface{}{
-		"title":         actionPayload.Input.Title,
-		"description":   actionPayload.Input.Description,
-		"thumbnail":     actionPayload.Input.Images[0],
-		"user_id":       actionPayload.Input.User_id,
-		"category_id":   actionPayload.Input.Category_id,
-		"location_id":   location.Id,
-		"start_date":    actionPayload.Input.Start_date,
-		"end_date":      actionPayload.Input.End_date,
-		"enterance_fee": actionPayload.Input.Enterance_fee,
+		"title":       actionPayload.Input.Title,
+		"description": actionPayload.Input.Description,
+		"thumbnail":   "http://localhost:5000/images/" + *thumbnail,
+		"user_id":     actionPayload.Input.User_id,
+		"category_id": actionPayload.Input.Category_id,
+		"location_id": location.Id,
+		"start_date":  actionPayload.Input.Start_date,
+		"end_date":    actionPayload.Input.End_date,
 	}
 
 	result, err := actions.CreateEvent(mapVariables, r.Header.Get("Authorization"))
@@ -97,6 +97,26 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 		_, err = actions.CreateTag(models.CreateTagArgs{
 			Name:     tag,
 			Event_id: result.Id,
+		}, r.Header.Get("Authorization"))
+
+		if err != nil {
+			println(err)
+			errorObject := models.GraphQLError{
+				Message: err.Error(),
+			}
+			errorBody, _ := json.Marshal(errorObject)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write(errorBody)
+			return
+		}
+	}
+
+	for _, ticket := range actionPayload.Input.Tickets {
+		_, err = actions.AddTicket(models.AddTicketArgs{
+			Event_id:    result.Id,
+			Ticket_type: ticket.Ticket_type,
+			Description: *ticket.Description,
+			Price:       ticket.Price,
 		}, r.Header.Get("Authorization"))
 
 		if err != nil {
