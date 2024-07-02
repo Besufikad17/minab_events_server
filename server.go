@@ -28,7 +28,8 @@ func main() {
 
 	// event handlers
 	mux.HandleFunc("/events/Create", handlers.CreateEventHandler)
-	mux.HandleFunc("/events/Reserve", events.NotifyUser)
+	mux.HandleFunc("/events/Reserve", handlers.ReserveEvent)
+	mux.HandleFunc("/events/Reserved", events.NotifyUser)
 
 	// image handlers
 	mux.HandleFunc("/image/Add", handlers.AddImagesHandler)

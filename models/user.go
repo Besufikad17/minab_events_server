@@ -14,9 +14,10 @@ type GetUserByIdGraphQLData struct {
 }
 
 type GetUserByIdOutput struct {
-	Email      string
-	First_name string
-	Last_name  string
+	Email        string
+	First_name   string
+	Last_name    string
+	Phone_number string
 }
 
 type GetUserByIdGraphQLResponse struct {

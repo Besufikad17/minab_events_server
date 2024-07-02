@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
 
 	actions "github.com/Besufikad17/minab_events/hasura/actions"
 	models "github.com/Besufikad17/minab_events/models"
@@ -129,6 +132,78 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 			w.Write(errorBody)
 			return
 		}
+	}
+
+	data, _ := json.Marshal(result)
+	w.Write(data)
+}
+
+func ReserveEvent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	reqBody, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "invalid payload", http.StatusBadRequest)
+		return
+	}
+
+	var actionPayload models.ReserveEventActionPayload
+	actionPayload.Input.Status = "pending"
+	err = json.Unmarshal(reqBody, &actionPayload)
+	if err != nil {
+		http.Error(w, "invalid payload", http.StatusBadRequest)
+		return
+	}
+
+	user, err := actions.GetUserById(map[string]interface{}{
+		"id": actionPayload.Input.User_id,
+	})
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	ticket, err := actions.GetTicketById(models.GetTicketByIdArgs{
+		Id: actionPayload.Input.Ticket_id,
+	})
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	callbackUrl := os.Getenv("CHAPA_CALLBACK_URL")
+	returnUrl := os.Getenv("CHAPA_RETURN_URL")
+	chapaArgs := models.ChapaArgs{
+		Amount:       ticket.Price,
+		Currency:     "ETB",
+		First_name:   user.First_name,
+		Last_name:    user.Last_name,
+		Email:        user.Email,
+		Phone_number: user.Phone_number,
+		Tx_ref:       "MinabEvents" + strconv.FormatInt(time.Now().UnixMilli(), 10) + user.Phone_number,
+		Return_url:   returnUrl + strconv.Itoa(actionPayload.Input.Event_id) + "?pid=1",
+		Callback_url: callbackUrl,
+	}
+
+	chapaResult, err := actions.PayWithChapa(chapaArgs)
+
+	result, err := actions.ReserveEvent(actionPayload.Input, r.Header.Get("Authorization"))
+	if result != nil {
+		result.CheckoutUrl = chapaResult.Data.Checkout_url
+	}
+
+	if err != nil {
+		errorObject := models.GraphQLError{
+			Message: err.Error(),
+		}
+		errorBody, _ := json.Marshal(errorObject)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(errorBody)
+		return
 	}
 
 	data, _ := json.Marshal(result)

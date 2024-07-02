@@ -59,3 +59,50 @@ func executeAddTicket(variables models.AddTicketArgs, token string) (response *m
 
 	return
 }
+
+func GetTicketById(args models.GetTicketByIdArgs) (response *models.GetTicketByIdOutput, err error) {
+	hasuraResponse, err := executeGetTicketById(args)
+
+	if err != nil {
+		return
+	}
+
+	if len(hasuraResponse.Errors) != 0 {
+		err = errors.New(hasuraResponse.Errors[0].Message)
+		return
+	}
+
+	response = &hasuraResponse.Data.Tickets[0]
+	return
+}
+
+func executeGetTicketById(variables models.GetTicketByIdArgs) (response *models.GetTicketByIdGraphQLResponse, err error) {
+	reqBody := models.GetTicketByIdGraphQLRequest{
+		Query:     constants.GetTicketById,
+		Variables: variables,
+	}
+	reqBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		return
+	}
+
+	hasuraURL := os.Getenv("HASURA_URL")
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", hasuraURL, bytes.NewBuffer(reqBytes))
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	respBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(respBytes, &response)
+	if err != nil {
+		return
+	}
+
+	return
+}

@@ -30,6 +30,33 @@ type AddTicketOutput struct {
 	Id int
 }
 
+type GetTicketByIdActionPayload struct {
+	SessionVariables map[string]interface{} `json:"session_variables"`
+	Input            GetTicketByIdArgs      `json:"input"`
+}
+
+type GetTicketByIdArgs struct {
+	Id int `json:"id"`
+}
+
+type GetTicketByIdGraphQLRequest struct {
+	Query     string            `json:"query"`
+	Variables GetTicketByIdArgs `json:"variables"`
+}
+
+type GetTicketByIdGraphQLData struct {
+	Tickets []GetTicketByIdOutput `json:"tickets"`
+}
+
+type GetTicketByIdGraphQLResponse struct {
+	Data   GetTicketByIdGraphQLData `json:"data,omitempty"`
+	Errors []GraphQLError           `json:"errors,omitempty"`
+}
+
+type GetTicketByIdOutput struct {
+	Price float32
+}
+
 type TicketInput struct {
 	Description *string `json:"description"`
 	Price       float32 `json:"price"`

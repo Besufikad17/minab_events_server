@@ -12,8 +12,12 @@ var CreateLocation string = "mutation CreateLocation($city: String!, $venue: Str
 
 var CreateTag string = "mutation CreateTag(  	$event_id: Int!,   $name: String! ) {   insert_tags_one(object: {event_id: $event_id, name: $name}) {       id     	name   } }"
 
-var GetUserById string = "query GetUserById(   $id: Int!  ) {   users(     where:{       id: {         _eq: $id       }     }   ) {     first_name     last_name     email   } }"
+var GetTicketById string = "query GetTicketById(   $id: Int! ) {   tickets(     where: {       id: {         _eq: $id       }     }   ) {     price   } }"
+
+var GetUserById string = "query GetUserById(   $id: Int!  ) {   users(     where:{       id: {         _eq: $id       }     }   ) {     first_name     last_name     email    phone_number   } }"
 
 var Register string = "mutation Register(   $first_name: String!,    $last_name: String!,    $email: String!,    $phone_number: String!,    $password: String! ) {   insert_users_one(object: {     first_name: $first_name,      last_name: $last_name,      email: $email,      phone_number: $phone_number,      password: $password }   ) {   	id     first_name     last_name     email     phone_number   } }"
+
+var ReserveEvent string = "mutation ReserveEvent(     $user_id: Int!,     $event_id: Int!,     $ticket_id: Int!,     $status: String!, ) {     insert_reservations_one(         object: {             user_id: $user_id,             event_id: $event_id,             ticket_id: $ticket_id,             status: $status         }     ) {        id     } }"
 
 var SearchUser string = "query SearchUser($login_text: String!) {   users(where: {     _or: [       {email: {_eq: $login_text}},       {phone_number: {_eq: $login_text}}     ]   }) {     id     first_name     last_name     email     phone_number     password   } }"

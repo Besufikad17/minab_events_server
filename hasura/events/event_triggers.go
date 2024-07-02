@@ -31,7 +31,7 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := actions.GetUserById(map[string]interface{}{
-		"id": actionPayload.UserID,
+		"id": actionPayload.Input.User_id,
 	})
 
 	if err != nil {
