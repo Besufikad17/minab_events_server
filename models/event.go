@@ -40,31 +40,33 @@ type CreateEventOutput struct {
 	Title       string `json:"title"`
 }
 
-type ReserveEventActionPayload struct {
+type GetEventByIdActionPayload struct {
 	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            ReserveEventArgs       `json:"input"`
+	Input            GetEventByIdArgs       `json:"input"`
 }
 
-type ReserveEventArgs struct {
-	User_id   int    `json:"user_id"`
-	Event_id  int    `json:"event_id"`
-	Ticket_id int    `json:"ticket_id"`
-	Status    string `json:"status"`
+type GetEventByIdArgs struct {
+	Id int `json:"id"`
 }
 
-type ReserveEventGraphQLRequest struct {
+type GetEventByIdGraphQLRequest struct {
 	Query     string           `json:"query"`
-	Variables ReserveEventArgs `json:"variables"`
+	Variables GetEventByIdArgs `json:"variables"`
 }
-type ReserveEventGraphQLData struct {
-	Insert_reservations_one ReserveEventOutput `json:"insert_reservations_one"`
+
+type GetEventByIdGraphQLData struct {
+	Events []GetEventByIdOutput `json:"events"`
 }
-type ReserveEventGraphQLResponse struct {
-	Data   ReserveEventGraphQLData `json:"data,omitempty"`
+
+type GetEventByIdGraphQLResponse struct {
+	Data   GetEventByIdGraphQLData `json:"data,omitempty"`
 	Errors []GraphQLError          `json:"errors,omitempty"`
 }
 
-type ReserveEventOutput struct {
-	Id          int    `json:"id"`
-	CheckoutUrl string `json:"checkoutUrl"`
+type GetEventByIdOutput struct {
+	Description string             `json:"description"`
+	End_date    string             `json:"end_date"`
+	Start_date  string             `json:"start_date"`
+	Title       string             `json:"title"`
+	Location    CreateLocationArgs `json:"location"`
 }

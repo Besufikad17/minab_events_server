@@ -8,10 +8,12 @@ import (
 	"net/http"
 	"net/smtp"
 	"os"
+	"strconv"
 	"text/template"
 
 	"github.com/Besufikad17/minab_events/hasura/actions"
 	"github.com/Besufikad17/minab_events/models"
+	"github.com/Besufikad17/minab_events/utils/helpers"
 )
 
 func NotifyUser(w http.ResponseWriter, r *http.Request) {
@@ -22,7 +24,7 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var actionPayload models.ReserveEventActionPayload
+	var actionPayload models.OnEventReservedActionPayload
 	err = json.Unmarshal(reqBody, &actionPayload)
 	if err != nil {
 		println(err)
@@ -30,6 +32,7 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// getting user info
 	user, err := actions.GetUserById(map[string]interface{}{
 		"id": actionPayload.Input.User_id,
 	})
@@ -39,6 +42,30 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	// getting ticket info
+	ticket, err := actions.GetTicketById(models.GetTicketByIdArgs{
+		Id: actionPayload.Input.Ticket_id,
+	})
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// getting event info
+	event, err := actions.GetEventById(models.GetEventByIdArgs{
+		Id: actionPayload.Input.Event_id,
+	})
+
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	qrCode, err := helpers.GenerateQR(strconv.Itoa(actionPayload.Input.Id))
 
 	from := os.Getenv("SMTP_EMAIL")
 	password := os.Getenv("SMTP_PWD")
@@ -66,9 +93,21 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 	body.Write([]byte(fmt.Sprintf("Subject: Event reserved \n%s\n\n", mimeHeaders)))
 
 	t.Execute(&body, struct {
-		Name string
+		Description string
+		FirstName   string
+		LastName    string
+		QrCode      string
+		StartDate   string
+		Title       string
+		Type        string
 	}{
-		Name: user.First_name + " " + user.Last_name,
+		Description: event.Description,
+		FirstName:   user.First_name,
+		LastName:    user.Last_name,
+		QrCode:      *qrCode,
+		StartDate:   event.Start_date,
+		Title:       event.Title,
+		Type:        ticket.Ticket_type,
 	})
 
 	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, body.Bytes())

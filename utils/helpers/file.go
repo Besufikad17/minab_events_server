@@ -3,11 +3,14 @@ package helpers
 import (
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/skip2/go-qrcode"
 )
 
 func isImage(mimeType string) bool {
@@ -53,4 +56,33 @@ func SaveImageToFile(input string) (*string, error) {
 	}
 
 	return &fileName, err
+}
+
+func GenerateQR(data string) (*string, error) {
+	qrCode, _ := qrcode.New(data, qrcode.Medium)
+	fileHeader := strconv.FormatInt(time.Now().UnixMilli(), 10) + data
+	fileName := fmt.Sprintf("%v.png", fileHeader)
+	err := qrCode.WriteFile(256, fileName)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
+	fmt.Println(fmt.Sprintf("QR code generated and saved as %v.png", fileHeader))
+
+	currentDir, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	sourcePath := filepath.Join(currentDir, fileName)
+	destPath := filepath.Join("public/assets/images/", fileName)
+
+	err = os.Rename(sourcePath, destPath)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return &fileName, nil
 }

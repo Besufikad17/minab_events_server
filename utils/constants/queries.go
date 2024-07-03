@@ -14,7 +14,11 @@ var CreatePayment string = "mutation CreatePayment(   $user_id: Int!,   $ticket_
 
 var CreateTag string = "mutation CreateTag(  	$event_id: Int!,   $name: String! ) {   insert_tags_one(object: {event_id: $event_id, name: $name}) {       id     	name   } }"
 
-var GetTicketById string = "query GetTicketById(   $id: Int! ) {   tickets(     where: {       id: {         _eq: $id       }     }   ) {     price 	event_id   } }"
+var GetTicketById string = "query GetTicketById(   $id: Int! ) {   tickets(     where: {       id: {         _eq: $id       }     }   ) {     price 	event_id   ticket_type } }"
+
+var GetEvent string = "query GetEvent($id: Int!) { events(where: {id: {_eq: $id}}) { title description start_date end_date location { city venue latitude longtiude }}}"
+
+var GetEventById string = "query GetEventById ($id: Int!) {   events(where:{ id: { _eq: $id } }) {     id     user_id     title     description     category {         id         name     }     thumbnail     images {         url     }     start_date     end_date     location {         id         city         venue         latitude         longtiude         full_location     }     tags {         name     }     bookmarks {         user_id     }     tickets {         id         ticket_type         description         price     }     reservations {       user_id       ticket_id       status     }   } }"
 
 var GetUserById string = "query GetUserById(   $id: Int!  ) {   users(     where:{       id: {         _eq: $id       }     }   ) {     first_name     last_name     email    phone_number   } }"
 

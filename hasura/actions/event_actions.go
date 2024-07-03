@@ -60,8 +60,8 @@ func executeCreateEvent(variables map[string]interface{}, token string) (respons
 	return
 }
 
-func ReserveEvent(args models.ReserveEventArgs, token string) (response *models.ReserveEventOutput, err error) {
-	hasuraResponse, err := executeReserveEvent(args, token)
+func GetEventById(args models.GetEventByIdArgs) (response *models.GetEventByIdOutput, err error) {
+	hasuraResponse, err := executeGetEventById(args)
 
 	if err != nil {
 		return
@@ -72,13 +72,13 @@ func ReserveEvent(args models.ReserveEventArgs, token string) (response *models.
 		return
 	}
 
-	response = &hasuraResponse.Data.Insert_reservations_one
+	response = &hasuraResponse.Data.Events[0]
 	return
 }
 
-func executeReserveEvent(variables models.ReserveEventArgs, token string) (response *models.ReserveEventGraphQLResponse, err error) {
-	reqBody := models.ReserveEventGraphQLRequest{
-		Query:     constants.ReserveEvent,
+func executeGetEventById(variables models.GetEventByIdArgs) (response *models.GetEventByIdGraphQLResponse, err error) {
+	reqBody := models.GetEventByIdGraphQLRequest{
+		Query:     constants.GetEvent,
 		Variables: variables,
 	}
 
@@ -88,13 +88,9 @@ func executeReserveEvent(variables models.ReserveEventArgs, token string) (respo
 	}
 
 	hasuraURL := os.Getenv("HASURA_URL")
-	client := &http.Client{}
-	req, err := http.NewRequest("POST", hasuraURL, bytes.NewBuffer(reqBytes))
-	req.Header.Add("Authorization", token)
-
-	resp, err := client.Do(req)
+	resp, err := http.Post(hasuraURL, "application/json", bytes.NewBuffer(reqBytes))
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	respBytes, err := io.ReadAll(resp.Body)

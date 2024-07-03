@@ -54,7 +54,9 @@ type GetTicketByIdGraphQLResponse struct {
 }
 
 type GetTicketByIdOutput struct {
-	Price float32
+	Price       float32
+	Event_id    int
+	Ticket_type string
 }
 
 type TicketInput struct {

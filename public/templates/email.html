@@ -10,9 +10,26 @@
     <tr>
       <td align="center" style="padding: 24px 0;">
         <p style="font-size: 14px; line-height: 24px; margin: 0;">
-            Congratulations! {{.Name}}, Your reservation for the event has been successfully confirmed. We are thrilled to have you join us and encourage you to mark the date in your calendar to ensure you don’t miss this exciting occasion. If you have any questions or need further assistance, please feel free to reach out. We look forward to seeing you there!
+            Congratulations! {{.FirstName}} {{.LastName}}, Your reservation for the event has been successfully confirmed. We are thrilled to have you join us and encourage you to mark the date in your calendar to ensure you don’t miss this exciting occasion. If you have any questions or need further assistance, please feel free to reach out. We look forward to seeing you there!
         </p>
       </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <h1>Your Ticket</h1>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-left: 24px">
+          <h2>{{.Title}}</h2>
+          <p>{{.Description}}</p>
+          <span>{{.StartDate}}</span>
+          <p>Issued to: {{.FirstName}} {{.LastName}}</p>
+          <p>Ticket: {{.Type}}</p> 
+      </td>
+      <td>
+          <img src="public/assets/images/{{.QrCode}}" />
+      </td>  
     </tr>
   </table>
 </body>
