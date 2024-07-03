@@ -175,6 +175,15 @@ func ReserveEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	textRef := "MinabEvents" + strconv.FormatInt(time.Now().UnixMilli(), 10) + user.Phone_number
+	payment, err := actions.CreatePayment(models.CreatePaymentArgs{
+		User_id:   actionPayload.Input.User_id,
+		Ticket_id: actionPayload.Input.Ticket_id,
+		Amount:    ticket.Price,
+		Reference: textRef,
+		Status:    "pending",
+	}, r.Header.Get("Authorization"))
+
 	callbackUrl := os.Getenv("CHAPA_CALLBACK_URL")
 	returnUrl := os.Getenv("CHAPA_RETURN_URL")
 	chapaArgs := models.ChapaArgs{
@@ -184,8 +193,8 @@ func ReserveEvent(w http.ResponseWriter, r *http.Request) {
 		Last_name:    user.Last_name,
 		Email:        user.Email,
 		Phone_number: user.Phone_number,
-		Tx_ref:       "MinabEvents" + strconv.FormatInt(time.Now().UnixMilli(), 10) + user.Phone_number,
-		Return_url:   returnUrl + strconv.Itoa(actionPayload.Input.Event_id) + "?pid=1",
+		Tx_ref:       textRef,
+		Return_url:   returnUrl + "?pid=" + strconv.Itoa(payment.Id),
 		Callback_url: callbackUrl,
 	}
 

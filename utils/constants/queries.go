@@ -10,9 +10,11 @@ var CreateImage string = "mutation CreateImage(  	$event_id: Int!,   $url: Strin
 
 var CreateLocation string = "mutation CreateLocation($city: String!, $venue: String!,  $lat: float8!, $lng: float8!) {   insert_locations_one(object: { city: $city, venue: $venue, latitude: $lat, longtiude: $lng }) {     id     city     venue   } }"
 
+var CreatePayment string = "mutation CreatePayment(   $user_id: Int!,   $ticket_id: Int!,   $amount: float8!,   $status: String!,   $reference: String! ) {   insert_payments_one(     object: {       user_id: $user_id,       ticket_id: $ticket_id,       amount: $amount,       status: $status,       reference: $reference     }   ) {     id   } }"
+
 var CreateTag string = "mutation CreateTag(  	$event_id: Int!,   $name: String! ) {   insert_tags_one(object: {event_id: $event_id, name: $name}) {       id     	name   } }"
 
-var GetTicketById string = "query GetTicketById(   $id: Int! ) {   tickets(     where: {       id: {         _eq: $id       }     }   ) {     price   } }"
+var GetTicketById string = "query GetTicketById(   $id: Int! ) {   tickets(     where: {       id: {         _eq: $id       }     }   ) {     price 	event_id   } }"
 
 var GetUserById string = "query GetUserById(   $id: Int!  ) {   users(     where:{       id: {         _eq: $id       }     }   ) {     first_name     last_name     email    phone_number   } }"
 

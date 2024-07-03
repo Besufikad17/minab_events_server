@@ -26,6 +26,7 @@ func CreateEvent(args map[string]interface{}, token string) (response models.Cre
 	response = hasuraResponse.Data.Insert_events_one
 	return
 }
+
 func executeCreateEvent(variables map[string]interface{}, token string) (response *models.CreateEventGraphQLResponse, err error) {
 	reqBody := models.GraphQLRequest{
 		Query:     constants.CreateEvent,
