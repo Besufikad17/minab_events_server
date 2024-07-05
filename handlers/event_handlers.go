@@ -55,7 +55,6 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result, err := actions.CreateEvent(mapVariables, r.Header.Get("Authorization"))
-	fmt.Println(actionPayload.Input.Tags)
 
 	if err != nil {
 		errorObject := models.GraphQLError{

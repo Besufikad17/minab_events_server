@@ -8,7 +8,7 @@
       </td>
     </tr>
     <tr>
-      <td align="center" style="padding: 24px 0;">
+      <td style="padding: 24px">
         <p style="font-size: 14px; line-height: 24px; margin: 0;">
             Congratulations! {{.FirstName}} {{.LastName}}, Your reservation for the event has been successfully confirmed. We are thrilled to have you join us and encourage you to mark the date in your calendar to ensure you don’t miss this exciting occasion. If you have any questions or need further assistance, please feel free to reach out. We look forward to seeing you there!
         </p>
@@ -19,16 +19,16 @@
         <h1>Your Ticket</h1>
       </td>
     </tr>
-    <tr>
-      <td style="padding-left: 24px">
+    <tr style="border-style: 1px solid #000;">
+      <td style="padding-left: 24px;">
           <h2>{{.Title}}</h2>
           <p>{{.Description}}</p>
-          <span>{{.StartDate}}</span>
-          <p>Issued to: {{.FirstName}} {{.LastName}}</p>
-          <p>Ticket: {{.Type}}</p> 
+          <span><b>Date:</b>{{.StartDate}}</span>
+          <p><b>Issued to:</b> {{.FirstName}} {{.LastName}}</p>
+          <p><b>Ticket:</b> {{.Type}}</p> 
       </td>
       <td>
-          <img src="public/assets/images/{{.QrCode}}" />
+          <img src="{{.QrCode}}" />
       </td>  
     </tr>
   </table>

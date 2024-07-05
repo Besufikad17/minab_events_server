@@ -35,8 +35,6 @@ func AddImages(args models.AddImagesArgs, token string) (response *models.AddIma
 	}
 
 	args.Images = images
-	s, err := json.Marshal(args.Images)
-	println(string(s))
 
 	hasuraResponse, err := executeAddImages(args, token)
 

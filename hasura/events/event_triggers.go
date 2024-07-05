@@ -66,6 +66,7 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	qrCode, err := helpers.GenerateQR(strconv.Itoa(actionPayload.Input.Id))
+	url, err := helpers.UploadFile("public/assets/images/" + *qrCode)
 
 	from := os.Getenv("SMTP_EMAIL")
 	password := os.Getenv("SMTP_PWD")
@@ -104,7 +105,7 @@ func NotifyUser(w http.ResponseWriter, r *http.Request) {
 		Description: event.Description,
 		FirstName:   user.First_name,
 		LastName:    user.Last_name,
-		QrCode:      *qrCode,
+		QrCode:      *url,
 		StartDate:   event.Start_date,
 		Title:       event.Title,
 		Type:        ticket.Ticket_type,
