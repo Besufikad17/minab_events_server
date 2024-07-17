@@ -11,7 +11,7 @@ RUN go mod download
 COPY . .
 
 # Building the application
-RUN go build -o minab_events
+RUN go build -o server
 
 # Fetching the latest nginx image
 FROM alpine:3.16 as production
