@@ -23,7 +23,7 @@ RUN apk add --no-cache ca-certificates
 COPY --from=builder minab_events .
 
 # Starting our application
-CMD ./minab_events
+CMD ./server
 
 # Exposing server port
 EXPOSE 5000
