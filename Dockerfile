@@ -26,4 +26,4 @@ COPY --from=builder minab_events .
 CMD ./minab_events
 
 # Exposing server port
-EXPOSE 8080
+EXPOSE 5000
