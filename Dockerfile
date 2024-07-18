@@ -17,4 +17,4 @@ COPY . .
 RUN go build -o main server.go
 
 # Expose port 8080 to the outside world
-EXPOSE 8080
+EXPOSE 5000
