@@ -1,29 +1,20 @@
-FROM golang:latest as builder
+# Use the official Golang image as the base image
+FROM golang:1.20-alpine
 
-# Work directory
-WORKDIR /minab_events
+# Set the Current Working Directory inside the container
+WORKDIR /app
 
-# Installing dependencies
+# Copy go mod and sum files
 COPY go.mod go.sum ./
+
+# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
 
-# Copying all the files
+# Copy the source from the current directory to the working Directory inside the container
 COPY . .
 
-# Building the application
-RUN go build -o server
+# Build the Go app with server.go as the entry point
+RUN go build -o main server.go
 
-# Fetching the latest nginx image
-FROM alpine:3.16 as production
-
-# Certificates
-RUN apk add --no-cache ca-certificates
-
-# Copying built assets from builder
-COPY --from=builder server .
-
-# Starting our application
-CMD ./server
-
-# Exposing server port
-EXPOSE 5000
+# Expose port 8080 to the outside world
+EXPOSE 8080
