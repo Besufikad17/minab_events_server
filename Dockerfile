@@ -20,7 +20,7 @@ FROM alpine:3.16 as production
 RUN apk add --no-cache ca-certificates
 
 # Copying built assets from builder
-COPY --from=builder minab_events .
+COPY --from=builder server .
 
 # Starting our application
 CMD ./server
