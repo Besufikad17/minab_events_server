@@ -1,0 +1,84 @@
+table:
+  name: locations
+  schema: public
+array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: location_id
+        table:
+          name: events
+          schema: public
+computed_fields:
+  - name: full_location
+    definition:
+      function:
+        name: full_location
+        schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - city
+        - created_at
+        - id
+        - latitude
+        - longtiude
+        - updated_at
+        - venue
+    comment: ""
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - city
+        - created_at
+        - id
+        - latitude
+        - longtiude
+        - updated_at
+        - venue
+      computed_fields:
+        - full_location
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - city
+        - created_at
+        - id
+        - latitude
+        - longtiude
+        - updated_at
+        - venue
+      computed_fields:
+        - full_location
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - city
+        - created_at
+        - id
+        - latitude
+        - longtiude
+        - updated_at
+        - venue
+      filter:
+        events:
+          user_id:
+            _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        events:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""

@@ -1,0 +1,32 @@
+table:
+  name: categories
+  schema: public
+array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: category_id
+        table:
+          name: events
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - created_at
+        - id
+        - image
+        - name
+        - updated_at
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - id
+        - image
+        - name
+        - updated_at
+      filter: {}
+    comment: ""

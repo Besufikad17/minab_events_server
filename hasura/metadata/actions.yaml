@@ -1,0 +1,471 @@
+actions:
+  - name: AddImages
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/image/Add'
+      forward_client_headers: true
+    permissions:
+      - role: user
+  - name: AddTicket
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/ticket/Add'
+      forward_client_headers: true
+    permissions:
+      - role: user
+  - name: CreateEvent
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/events/Create'
+      forward_client_headers: true
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+  - name: CreateImage
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/image/Create'
+    permissions:
+      - role: user
+  - name: CreateLocation
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/locations/Create'
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+  - name: CreatePayment
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/payments/Create'
+      forward_client_headers: true
+    permissions:
+      - role: user
+  - name: CreateTag
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/tags/Create'
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+  - name: GetEventById
+    definition:
+      kind: ""
+      handler: '{{ACTION_CONTROLLER_URL}}/events/Get'
+  - name: GetReservation
+    definition:
+      kind: ""
+      handler: '{{ACTION_CONTROLLER_URL}}/reservation/Get'
+      forward_client_headers: true
+  - name: GetTicketById
+    definition:
+      kind: ""
+      handler: '{{ACTION_CONTROLLER_URL}}/tickets/Get'
+      forward_client_headers: true
+  - name: GetUserById
+    definition:
+      kind: ""
+      handler: '{{ACTION_CONTROLLER_URL}}/user'
+  - name: ReserveEvent
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/events/Reserve'
+      forward_client_headers: true
+    permissions:
+      - role: user
+  - name: SearchUser
+    definition:
+      kind: ""
+      handler: '{{ACTION_CONTROLLER_URL}}/Search'
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+      - role: anonymous
+  - name: UpdateEvent
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/events/Update'
+      forward_client_headers: true
+      request_transform:
+        method: PUT
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+  - name: UpdateLocation
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/locations/Update'
+      request_transform:
+        method: PUT
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+  - name: login
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/Login'
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    comment: login
+  - name: register
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_CONTROLLER_URL}}/Register'
+      request_transform:
+        method: POST
+        query_params: {}
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: anonymous
+    comment: register
+custom_types:
+  enums:
+    - name: AddImagesEventsConstraint
+      values:
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: events_pkey
+    - name: AddImagesEventsUpdateColumn
+      values:
+        - description: column name
+          is_deprecated: null
+          value: category_id
+        - description: column name
+          is_deprecated: null
+          value: created_at
+        - description: column name
+          is_deprecated: null
+          value: description
+        - description: column name
+          is_deprecated: null
+          value: end_date
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+        - description: column name
+          is_deprecated: null
+          value: id
+        - description: column name
+          is_deprecated: null
+          value: location_id
+        - description: column name
+          is_deprecated: null
+          value: start_date
+        - description: column name
+          is_deprecated: null
+          value: thumbnail
+        - description: column name
+          is_deprecated: null
+          value: title
+        - description: column name
+          is_deprecated: null
+          value: updated_at
+        - description: column name
+          is_deprecated: null
+          value: user_id
+    - name: AddImagesBookmarksSelectColumn
+      values:
+        - description: column name
+          is_deprecated: null
+          value: created_at
+        - description: column name
+          is_deprecated: null
+          value: event_id
+        - description: column name
+          is_deprecated: null
+          value: id
+        - description: column name
+          is_deprecated: null
+          value: updated_at
+        - description: column name
+          is_deprecated: null
+          value: user_id
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpAvgArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpCorrArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumn
+      values:
+        - description: column name
+          is_deprecated: null
+          value: category_id
+        - description: column name
+          is_deprecated: null
+          value: created_at
+        - description: column name
+          is_deprecated: null
+          value: description
+        - description: column name
+          is_deprecated: null
+          value: end_date
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+        - description: column name
+          is_deprecated: null
+          value: id
+        - description: column name
+          is_deprecated: null
+          value: location_id
+        - description: column name
+          is_deprecated: null
+          value: start_date
+        - description: column name
+          is_deprecated: null
+          value: thumbnail
+        - description: column name
+          is_deprecated: null
+          value: title
+        - description: column name
+          is_deprecated: null
+          value: updated_at
+        - description: column name
+          is_deprecated: null
+          value: user_id
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpCovarSampArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpMaxArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpMinArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpStddevSampArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpSumArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesEventsSelectColumnEventsAggregateBoolExpVarSampArgumentsColumns
+      values:
+        - description: column name
+          is_deprecated: null
+          value: enterance_fee
+    - name: AddImagesReservedEventsSelectColumn
+      values:
+        - description: column name
+          is_deprecated: null
+          value: created_at
+        - description: column name
+          is_deprecated: null
+          value: event_id
+        - description: column name
+          is_deprecated: null
+          value: id
+        - description: column name
+          is_deprecated: null
+          value: updated_at
+        - description: column name
+          is_deprecated: null
+          value: user_id
+    - name: AddImagesReservedEventsConstraint
+      values:
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: reserved_events_pkey
+    - name: AddImagesReservedEventsUpdateColumn
+      values:
+        - description: placeholder (do not use)
+          is_deprecated: null
+          value: _PLACEHOLDER
+    - name: AddImagesUsersConstraint
+      values:
+        - description: unique or primary key constraint on columns "email"
+          is_deprecated: null
+          value: users_email_key
+        - description: unique or primary key constraint on columns "phone_number"
+          is_deprecated: null
+          value: users_phone_number_key
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: users_pkey
+    - name: AddImagesUsersUpdateColumn
+      values:
+        - description: placeholder (do not use)
+          is_deprecated: null
+          value: _PLACEHOLDER
+    - name: AddImagesBookmarksConstraint
+      values:
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: bookmarks_pkey
+    - name: AddImagesBookmarksUpdateColumn
+      values:
+        - description: placeholder (do not use)
+          is_deprecated: null
+          value: _PLACEHOLDER
+    - name: AddImagesImagesConstraint
+      values:
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: images_pkey
+    - name: AddImagesImagesUpdateColumn
+      values:
+        - description: column name
+          is_deprecated: null
+          value: created_at
+        - description: column name
+          is_deprecated: null
+          value: event_id
+        - description: column name
+          is_deprecated: null
+          value: id
+        - description: column name
+          is_deprecated: null
+          value: updated_at
+        - description: column name
+          is_deprecated: null
+          value: url
+    - name: AddImagesLocationsConstraint
+      values:
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: locations_pkey
+    - name: AddImagesLocationsUpdateColumn
+      values:
+        - description: column name
+          is_deprecated: null
+          value: city
+        - description: column name
+          is_deprecated: null
+          value: created_at
+        - description: column name
+          is_deprecated: null
+          value: id
+        - description: column name
+          is_deprecated: null
+          value: latitude
+        - description: column name
+          is_deprecated: null
+          value: longtiude
+        - description: column name
+          is_deprecated: null
+          value: updated_at
+        - description: column name
+          is_deprecated: null
+          value: venue
+    - name: AddImagesTagsConstraint
+      values:
+        - description: unique or primary key constraint on columns "id"
+          is_deprecated: null
+          value: tags_pkey
+    - name: AddImagesTagsUpdateColumn
+      values:
+        - description: placeholder (do not use)
+          is_deprecated: null
+          value: _PLACEHOLDER
+  input_objects:
+    - name: AddImagesImagesInsertInput
+    - name: AddImagesEventsObjRelInsertInput
+    - name: AddImagesEventsInsertInput
+    - name: AddImagesBookmarksArrRelInsertInput
+    - name: AddImagesBookmarksInsertInput
+    - name: AddImagesUsersObjRelInsertInput
+    - name: AddImagesUsersInsertInput
+    - name: AddImagesEventsArrRelInsertInput
+    - name: AddImagesEventsOnConflict
+    - name: AddImagesEventsBoolExp
+    - name: AddImagesBookmarksBoolExp
+    - name: AddImagesTimestamptzComparisonExp
+    - name: AddImagesIntComparisonExp
+    - name: AddImagesUsersBoolExp
+    - name: AddImagesBookmarksAggregateBoolExp
+    - name: AddImagesBookmarksAggregateBoolExpCount
+    - name: AddImagesStringComparisonExp
+    - name: AddImagesEventsAggregateBoolExp
+    - name: AddImagesEventsAggregateBoolExpAvg
+    - name: AddImagesFloat8ComparisonExp
+    - name: AddImagesEventsAggregateBoolExpCorr
+    - name: AddImagesEventsAggregateBoolExpCorrArguments
+    - name: AddImagesEventsAggregateBoolExpCount
+    - name: AddImagesEventsAggregateBoolExpCovarSamp
+    - name: AddImagesEventsAggregateBoolExpCovarSampArguments
+    - name: AddImagesEventsAggregateBoolExpMax
+    - name: AddImagesEventsAggregateBoolExpMin
+    - name: AddImagesEventsAggregateBoolExpStddevSamp
+    - name: AddImagesEventsAggregateBoolExpSum
+    - name: AddImagesEventsAggregateBoolExpVarSamp
+    - name: AddImagesReservedEventsBoolExp
+    - name: AddImagesReservedEventsAggregateBoolExp
+    - name: AddImagesReservedEventsAggregateBoolExpCount
+    - name: AddImagesCategoriesBoolExp
+    - name: AddImagesDateComparisonExp
+    - name: AddImagesImagesBoolExp
+    - name: AddImagesLocationsBoolExp
+    - name: AddImagesTagsBoolExp
+    - name: AddImagesReservedEventsArrRelInsertInput
+    - name: AddImagesReservedEventsInsertInput
+    - name: AddImagesReservedEventsOnConflict
+    - name: AddImagesUsersOnConflict
+    - name: AddImagesBookmarksOnConflict
+    - name: AddImagesImagesArrRelInsertInput
+    - name: AddImagesImagesOnConflict
+    - name: AddImagesLocationsObjRelInsertInput
+    - name: AddImagesLocationsInsertInput
+    - name: AddImagesLocationsOnConflict
+    - name: AddImagesTagsArrRelInsertInput
+    - name: AddImagesTagsInsertInput
+    - name: AddImagesTagsOnConflict
+    - name: tickets_input
+  objects:
+    - name: RegisterOutput
+    - name: SearchUserOutput
+    - name: LoginOutput
+    - name: CreateEventOutput
+    - name: CreateLocationOutput
+    - name: CreateTagOutput
+    - name: UsersDerivedOutput
+    - name: UpdateLocationOutput
+    - name: UpdateEventOutput
+    - name: insert_tags_inputs
+    - name: GetUserByIdOutput
+    - name: CreateImageOutput
+    - name: AddImagesOutput
+    - name: AddTicketOutput
+    - name: ReserveEventOutput
+    - name: GetTicketByIdOutput
+    - name: CreatePaymentOutput
+    - name: GetEventByIdOutput
+    - name: GetReservationOutput
+  scalars: []

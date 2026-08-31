@@ -1,0 +1,10 @@
+- name: minab_events
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url:
+        from_env: HASURA_GRAPHQL_DATABASE_URL
+      isolation_level: read-committed
+      use_prepared_statements: false
+  tables: "!include minab_events/tables/tables.yaml"
+  functions: "!include minab_events/functions/functions.yaml"

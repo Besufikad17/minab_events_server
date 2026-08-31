@@ -1,0 +1,75 @@
+services:
+  minab-events-db:
+    image: postgres:14
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      PGUSER: ${POSTGRES_USER}
+    volumes:
+      - minab-events-db-data:/var/lib/postgresql/data
+    networks:
+      - minab-events-service
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minab-events-service:
+    restart: unless-stopped
+    build: .
+    container_name: minab-events-service
+    environment:
+      HASURA_GRAPHQL_ENABLE_CONSOLE: ${HASURA_GRAPHQL_ENABLE_CONSOLE}
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: ${HASURA_GRAPHQL_ENABLED_LOG_TYPES}
+      HASURA_GRAPHQL_ENABLE_TELEMETRY: ${HASURA_GRAPHQL_ENABLE_TELEMETRY}
+      HASURA_GRAPHQL_LOG_LEVEL: ${HASURA_GRAPHQL_LOG_LEVEL}
+      HASURA_GRAPHQL_DEV_MODE: ${HASURA_GRAPHQL_DEV_MODE}
+      HASURA_GRAPHQL_DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: ${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}
+      HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: ${HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT}
+      ACTION_CONTROLLER_URL: ${ACTION_CONTROLLER_BASE_URL:-http://minab-events-controller:5000}
+    ports:
+      - "${HASURA_GRAPHQL_SERVER_PORT}:9691"
+    networks:
+      - minab-events-service
+    depends_on:
+      minab-events-db:
+        condition: service_healthy
+
+  minab-events-controller:
+    build:
+      context: ./controller
+      dockerfile: ./minab-events-controller.containerfile
+    container_name: minab-events-controller
+    restart: always
+    environment:
+      PORT: ${PORT:-5000}
+      HASURA_GRAPHQL_ENDPOINT: ${HASURA_GRAPHQL_URL}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      SMTP_EMAIL: ${SMTP_EMAIL}
+      SMTP_PWD: ${SMTP_PWD}
+      CHAPA_URL: ${CHAPA_URL}
+      CHAPA_AUTH: ${CHAPA_AUTH}
+      CHAPA_RETURN_URL: ${CHAPA_RETURN_URL}
+      CHAPA_CALLBACK_URL: ${CHAPA_CALLBACK_URL}
+      CLOUDINARY_URL: ${CLOUDINARY_URL}
+      CLOUDINARY_UPLOAD_PRESET: ${CLOUDINARY_UPLOAD_PRESET}
+    command: ["./server"]
+    networks:
+      - minab-events-service
+
+networks:
+  minab-events-service:
+  shared:
+    name: shared-net
+  shared-db-net:
+    name: shared-db-network
+
+volumes:
+  minab-events-db-data:

@@ -1,0 +1,869 @@
+type Mutation {
+  AddImages(
+    images: [AddImagesImagesInsertInput!]!
+  ): AddImagesOutput
+}
+
+type Mutation {
+  AddTicket(
+    event_id: Int!
+    ticket_type: String!
+    description: String!
+    price: float8!
+  ): AddTicketOutput
+}
+
+type Mutation {
+  CreateEvent(
+    title: String!
+    description: String!
+    user_id: Int!
+    category_id: Int!
+    city: String!
+    venue: String!
+    lat: float8!
+    lng: float8!
+    images: [String!]!
+    tickets: [tickets_input!]!
+    start_date: date!
+    end_date: date!
+    tags: [String!]!
+  ): CreateEventOutput
+}
+
+type Mutation {
+  CreateImage(
+    event_id: Int!
+    url: String!
+  ): CreateImageOutput
+}
+
+type Mutation {
+  CreateLocation(
+    city: String!
+    venue: String!
+    lat: float8!
+    lng: float8!
+  ): CreateLocationOutput
+}
+
+type Mutation {
+  CreatePayment(
+    user_id: Int!
+    ticket_id: Int!
+    amount: float8!
+    status: String!
+    reference: String!
+  ): CreatePaymentOutput
+}
+
+type Mutation {
+  CreateTag(
+    event_id: Int!
+    name: String!
+  ): CreateTagOutput
+}
+
+type Query {
+  GetEventById(
+    id: Int!
+  ): GetEventByIdOutput
+}
+
+type Query {
+  GetReservation(
+    ticket_id: Int!
+    user_id: Int!
+  ): GetReservationOutput
+}
+
+type Query {
+  GetTicketById(
+    id: Int!
+  ): GetTicketByIdOutput
+}
+
+type Query {
+  GetUserById(
+    id: Int!
+  ): GetUserByIdOutput
+}
+
+type Mutation {
+  ReserveEvent(
+    user_id: Int!
+    event_id: Int!
+    ticket_id: Int!
+    status: String!
+  ): ReserveEventOutput
+}
+
+type Query {
+  SearchUser(
+    login_text: String!
+  ): SearchUserOutput
+}
+
+type Mutation {
+  UpdateEvent(
+    id: Int!
+    title: String!
+    description: String!
+    category_id: Int!
+    location_id: Int!
+    city: String!
+    venue: String!
+    image: String!
+    enterance_fee: float8!
+    start_date: date!
+    end_date: date!
+    tags: [String!]!
+  ): CreateEventOutput
+}
+
+type Mutation {
+  UpdateLocation(
+    id: Int!
+    city: String!
+    venue: String!
+  ): UpdateLocationOutput
+}
+
+type Mutation {
+  login(
+    login_text: String!
+    password: String!
+    remember_me: Boolean!
+  ): LoginOutput
+}
+
+type Mutation {
+  register(
+    first_name: String!
+    last_name: String!
+    email: String!
+    phone_number: String!
+    password: String!
+    remember_me: Boolean!
+  ): RegisterOutput
+}
+
+enum AddImagesEventsConstraint {
+  """ unique or primary key constraint on columns "id" """ events_pkey
+}
+
+enum AddImagesEventsUpdateColumn {
+  """ column name """ category_id
+  """ column name """ created_at
+  """ column name """ description
+  """ column name """ end_date
+  """ column name """ enterance_fee
+  """ column name """ id
+  """ column name """ location_id
+  """ column name """ start_date
+  """ column name """ thumbnail
+  """ column name """ title
+  """ column name """ updated_at
+  """ column name """ user_id
+}
+
+enum AddImagesBookmarksSelectColumn {
+  """ column name """ created_at
+  """ column name """ event_id
+  """ column name """ id
+  """ column name """ updated_at
+  """ column name """ user_id
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpAvgArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpCorrArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumn {
+  """ column name """ category_id
+  """ column name """ created_at
+  """ column name """ description
+  """ column name """ end_date
+  """ column name """ enterance_fee
+  """ column name """ id
+  """ column name """ location_id
+  """ column name """ start_date
+  """ column name """ thumbnail
+  """ column name """ title
+  """ column name """ updated_at
+  """ column name """ user_id
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpCovarSampArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpMaxArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpMinArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpStddevSampArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpSumArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesEventsSelectColumnEventsAggregateBoolExpVarSampArgumentsColumns {
+  """ column name """ enterance_fee
+}
+
+enum AddImagesReservedEventsSelectColumn {
+  """ column name """ created_at
+  """ column name """ event_id
+  """ column name """ id
+  """ column name """ updated_at
+  """ column name """ user_id
+}
+
+enum AddImagesReservedEventsConstraint {
+  """ unique or primary key constraint on columns "id" """ reserved_events_pkey
+}
+
+enum AddImagesReservedEventsUpdateColumn {
+  """ placeholder (do not use) """ _PLACEHOLDER
+}
+
+enum AddImagesUsersConstraint {
+  """ unique or primary key constraint on columns "email" """ users_email_key
+  """ unique or primary key constraint on columns "phone_number" """ users_phone_number_key
+  """ unique or primary key constraint on columns "id" """ users_pkey
+}
+
+enum AddImagesUsersUpdateColumn {
+  """ placeholder (do not use) """ _PLACEHOLDER
+}
+
+enum AddImagesBookmarksConstraint {
+  """ unique or primary key constraint on columns "id" """ bookmarks_pkey
+}
+
+enum AddImagesBookmarksUpdateColumn {
+  """ placeholder (do not use) """ _PLACEHOLDER
+}
+
+enum AddImagesImagesConstraint {
+  """ unique or primary key constraint on columns "id" """ images_pkey
+}
+
+enum AddImagesImagesUpdateColumn {
+  """ column name """ created_at
+  """ column name """ event_id
+  """ column name """ id
+  """ column name """ updated_at
+  """ column name """ url
+}
+
+enum AddImagesLocationsConstraint {
+  """ unique or primary key constraint on columns "id" """ locations_pkey
+}
+
+enum AddImagesLocationsUpdateColumn {
+  """ column name """ city
+  """ column name """ created_at
+  """ column name """ id
+  """ column name """ latitude
+  """ column name """ longtiude
+  """ column name """ updated_at
+  """ column name """ venue
+}
+
+enum AddImagesTagsConstraint {
+  """ unique or primary key constraint on columns "id" """ tags_pkey
+}
+
+enum AddImagesTagsUpdateColumn {
+  """ placeholder (do not use) """ _PLACEHOLDER
+}
+
+input AddImagesImagesInsertInput {
+  created_at: timestamptz
+  event: AddImagesEventsObjRelInsertInput
+  event_id: Int
+  id: Int
+  updated_at: timestamptz
+  url: String
+}
+
+input AddImagesEventsObjRelInsertInput {
+  data: AddImagesEventsInsertInput!
+  on_conflict: AddImagesEventsOnConflict
+}
+
+input AddImagesEventsInsertInput {
+  bookmarks: AddImagesBookmarksArrRelInsertInput
+  category_id: Int
+  created_at: timestamptz
+  description: String
+  end_date: date
+  enterance_fee: float8
+  id: Int
+  images: AddImagesImagesArrRelInsertInput
+  location: AddImagesLocationsObjRelInsertInput
+  location_id: Int
+  reserved_events: AddImagesReservedEventsArrRelInsertInput
+  start_date: date
+  tags: AddImagesTagsArrRelInsertInput
+  thumbnail: String
+  title: String
+  updated_at: timestamptz
+  user: AddImagesUsersObjRelInsertInput
+  user_id: Int
+}
+
+input AddImagesBookmarksArrRelInsertInput {
+  data: [AddImagesBookmarksInsertInput!]!
+  on_conflict: AddImagesBookmarksOnConflict
+}
+
+input AddImagesBookmarksInsertInput {
+  created_at: timestamptz
+  event: AddImagesEventsObjRelInsertInput
+  event_id: Int
+  id: Int
+  updated_at: timestamptz
+  user: AddImagesUsersObjRelInsertInput
+  user_id: Int
+}
+
+input AddImagesUsersObjRelInsertInput {
+  data: AddImagesUsersInsertInput!
+  on_conflict: AddImagesUsersOnConflict
+}
+
+input AddImagesUsersInsertInput {
+  bookmarks: AddImagesBookmarksArrRelInsertInput
+  created_at: timestamptz
+  email: String
+  events: AddImagesEventsArrRelInsertInput
+  first_name: String
+  id: Int
+  last_name: String
+  password: String
+  phone_number: String
+  reserved_events: AddImagesReservedEventsArrRelInsertInput
+  updated_at: timestamptz
+}
+
+input AddImagesEventsArrRelInsertInput {
+  data: [AddImagesEventsInsertInput!]!
+  on_conflict: AddImagesEventsOnConflict
+}
+
+input AddImagesEventsOnConflict {
+  constraint: AddImagesEventsConstraint!
+  update_columns: [AddImagesEventsUpdateColumn!]!
+  where: AddImagesEventsBoolExp
+}
+
+input AddImagesEventsBoolExp {
+  _and: [AddImagesEventsBoolExp!]
+  _not: AddImagesEventsBoolExp
+  _or: [AddImagesEventsBoolExp!]
+  bookmarks: AddImagesBookmarksBoolExp
+  bookmarks_aggregate: AddImagesBookmarksAggregateBoolExp
+  category: AddImagesCategoriesBoolExp
+  category_id: AddImagesIntComparisonExp
+  created_at: AddImagesTimestamptzComparisonExp
+  description: AddImagesStringComparisonExp
+  end_date: AddImagesDateComparisonExp
+  enterance_fee: AddImagesFloat8ComparisonExp
+  id: AddImagesIntComparisonExp
+  images: AddImagesImagesBoolExp
+  location: AddImagesLocationsBoolExp
+  location_id: AddImagesIntComparisonExp
+  reserved_events: AddImagesReservedEventsBoolExp
+  reserved_events_aggregate: AddImagesReservedEventsAggregateBoolExp
+  start_date: AddImagesDateComparisonExp
+  tags: AddImagesTagsBoolExp
+  thumbnail: AddImagesStringComparisonExp
+  title: AddImagesStringComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+  user: AddImagesUsersBoolExp
+  user_id: AddImagesIntComparisonExp
+}
+
+input AddImagesBookmarksBoolExp {
+  _and: [AddImagesBookmarksBoolExp!]
+  _not: AddImagesBookmarksBoolExp
+  _or: [AddImagesBookmarksBoolExp!]
+  created_at: AddImagesTimestamptzComparisonExp
+  event: AddImagesEventsBoolExp
+  event_id: AddImagesIntComparisonExp
+  id: AddImagesIntComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+  user: AddImagesUsersBoolExp
+  user_id: AddImagesIntComparisonExp
+}
+
+input AddImagesTimestamptzComparisonExp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+input AddImagesIntComparisonExp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+input AddImagesUsersBoolExp {
+  _and: [AddImagesUsersBoolExp!]
+  _not: AddImagesUsersBoolExp
+  _or: [AddImagesUsersBoolExp!]
+  bookmarks: AddImagesBookmarksBoolExp
+  bookmarks_aggregate: AddImagesBookmarksAggregateBoolExp
+  created_at: AddImagesTimestamptzComparisonExp
+  email: AddImagesStringComparisonExp
+  events: AddImagesEventsBoolExp
+  events_aggregate: AddImagesEventsAggregateBoolExp
+  first_name: AddImagesStringComparisonExp
+  id: AddImagesIntComparisonExp
+  last_name: AddImagesStringComparisonExp
+  password: AddImagesStringComparisonExp
+  phone_number: AddImagesStringComparisonExp
+  reserved_events: AddImagesReservedEventsBoolExp
+  reserved_events_aggregate: AddImagesReservedEventsAggregateBoolExp
+  updated_at: AddImagesTimestamptzComparisonExp
+}
+
+input AddImagesBookmarksAggregateBoolExp {
+  count: AddImagesBookmarksAggregateBoolExpCount
+}
+
+input AddImagesBookmarksAggregateBoolExpCount {
+  arguments: [AddImagesBookmarksSelectColumn!]
+  distinct: Boolean
+  filter: AddImagesBookmarksBoolExp
+  predicate: AddImagesIntComparisonExp!
+}
+
+input AddImagesStringComparisonExp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _iregex: String
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _niregex: String
+  _nlike: String
+  _nregex: String
+  _nsimilar: String
+  _regex: String
+  _similar: String
+}
+
+input AddImagesEventsAggregateBoolExp {
+  avg: AddImagesEventsAggregateBoolExpAvg
+  corr: AddImagesEventsAggregateBoolExpCorr
+  count: AddImagesEventsAggregateBoolExpCount
+  covar_samp: AddImagesEventsAggregateBoolExpCovarSamp
+  max: AddImagesEventsAggregateBoolExpMax
+  min: AddImagesEventsAggregateBoolExpMin
+  stddev_samp: AddImagesEventsAggregateBoolExpStddevSamp
+  sum: AddImagesEventsAggregateBoolExpSum
+  var_samp: AddImagesEventsAggregateBoolExpVarSamp
+}
+
+input AddImagesEventsAggregateBoolExpAvg {
+  arguments: AddImagesEventsSelectColumnEventsAggregateBoolExpAvgArgumentsColumns!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesFloat8ComparisonExp {
+  _eq: float8
+  _gt: float8
+  _gte: float8
+  _in: [float8!]
+  _is_null: Boolean
+  _lt: float8
+  _lte: float8
+  _neq: float8
+  _nin: [float8!]
+}
+
+input AddImagesEventsAggregateBoolExpCorr {
+  arguments: AddImagesEventsAggregateBoolExpCorrArguments!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpCorrArguments {
+  X: AddImagesEventsSelectColumnEventsAggregateBoolExpCorrArgumentsColumns!
+  Y: AddImagesEventsSelectColumnEventsAggregateBoolExpCorrArgumentsColumns!
+}
+
+input AddImagesEventsAggregateBoolExpCount {
+  arguments: [AddImagesEventsSelectColumn!]
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesIntComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpCovarSamp {
+  arguments: AddImagesEventsAggregateBoolExpCovarSampArguments!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpCovarSampArguments {
+  X: AddImagesEventsSelectColumnEventsAggregateBoolExpCovarSampArgumentsColumns!
+  Y: AddImagesEventsSelectColumnEventsAggregateBoolExpCovarSampArgumentsColumns!
+}
+
+input AddImagesEventsAggregateBoolExpMax {
+  arguments: AddImagesEventsSelectColumnEventsAggregateBoolExpMaxArgumentsColumns!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpMin {
+  arguments: AddImagesEventsSelectColumnEventsAggregateBoolExpMinArgumentsColumns!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpStddevSamp {
+  arguments: AddImagesEventsSelectColumnEventsAggregateBoolExpStddevSampArgumentsColumns!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpSum {
+  arguments: AddImagesEventsSelectColumnEventsAggregateBoolExpSumArgumentsColumns!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesEventsAggregateBoolExpVarSamp {
+  arguments: AddImagesEventsSelectColumnEventsAggregateBoolExpVarSampArgumentsColumns!
+  distinct: Boolean
+  filter: AddImagesEventsBoolExp
+  predicate: AddImagesFloat8ComparisonExp!
+}
+
+input AddImagesReservedEventsBoolExp {
+  _and: [AddImagesReservedEventsBoolExp!]
+  _not: AddImagesReservedEventsBoolExp
+  _or: [AddImagesReservedEventsBoolExp!]
+  created_at: AddImagesTimestamptzComparisonExp
+  event: AddImagesEventsBoolExp
+  event_id: AddImagesIntComparisonExp
+  id: AddImagesIntComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+  user: AddImagesUsersBoolExp
+  user_id: AddImagesIntComparisonExp
+}
+
+input AddImagesReservedEventsAggregateBoolExp {
+  count: AddImagesReservedEventsAggregateBoolExpCount
+}
+
+input AddImagesReservedEventsAggregateBoolExpCount {
+  arguments: [AddImagesReservedEventsSelectColumn!]
+  distinct: Boolean
+  filter: AddImagesReservedEventsBoolExp
+  predicate: AddImagesIntComparisonExp!
+}
+
+input AddImagesCategoriesBoolExp {
+  _and: [AddImagesCategoriesBoolExp!]
+  _not: AddImagesCategoriesBoolExp
+  _or: [AddImagesCategoriesBoolExp!]
+  created_at: AddImagesTimestamptzComparisonExp
+  events: AddImagesEventsBoolExp
+  events_aggregate: AddImagesEventsAggregateBoolExp
+  id: AddImagesIntComparisonExp
+  image: AddImagesStringComparisonExp
+  name: AddImagesStringComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+}
+
+input AddImagesDateComparisonExp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+input AddImagesImagesBoolExp {
+  _and: [AddImagesImagesBoolExp!]
+  _not: AddImagesImagesBoolExp
+  _or: [AddImagesImagesBoolExp!]
+  created_at: AddImagesTimestamptzComparisonExp
+  event: AddImagesEventsBoolExp
+  event_id: AddImagesIntComparisonExp
+  id: AddImagesIntComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+  url: AddImagesStringComparisonExp
+}
+
+input AddImagesLocationsBoolExp {
+  _and: [AddImagesLocationsBoolExp!]
+  _not: AddImagesLocationsBoolExp
+  _or: [AddImagesLocationsBoolExp!]
+  city: AddImagesStringComparisonExp
+  created_at: AddImagesTimestamptzComparisonExp
+  events: AddImagesEventsBoolExp
+  events_aggregate: AddImagesEventsAggregateBoolExp
+  full_location: AddImagesStringComparisonExp
+  id: AddImagesIntComparisonExp
+  latitude: AddImagesFloat8ComparisonExp
+  longtiude: AddImagesFloat8ComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+  venue: AddImagesStringComparisonExp
+}
+
+input AddImagesTagsBoolExp {
+  _and: [AddImagesTagsBoolExp!]
+  _not: AddImagesTagsBoolExp
+  _or: [AddImagesTagsBoolExp!]
+  created_at: AddImagesTimestamptzComparisonExp
+  event: AddImagesEventsBoolExp
+  event_id: AddImagesIntComparisonExp
+  id: AddImagesIntComparisonExp
+  name: AddImagesStringComparisonExp
+  updated_at: AddImagesTimestamptzComparisonExp
+}
+
+input AddImagesReservedEventsArrRelInsertInput {
+  data: [AddImagesReservedEventsInsertInput!]!
+  on_conflict: AddImagesReservedEventsOnConflict
+}
+
+input AddImagesReservedEventsInsertInput {
+  created_at: timestamptz
+  event: AddImagesEventsObjRelInsertInput
+  event_id: Int
+  id: Int
+  updated_at: timestamptz
+  user: AddImagesUsersObjRelInsertInput
+  user_id: Int
+}
+
+input AddImagesReservedEventsOnConflict {
+  constraint: AddImagesReservedEventsConstraint!
+  update_columns: [AddImagesReservedEventsUpdateColumn!]!
+  where: AddImagesReservedEventsBoolExp
+}
+
+input AddImagesUsersOnConflict {
+  constraint: AddImagesUsersConstraint!
+  update_columns: [AddImagesUsersUpdateColumn!]!
+  where: AddImagesUsersBoolExp
+}
+
+input AddImagesBookmarksOnConflict {
+  constraint: AddImagesBookmarksConstraint!
+  update_columns: [AddImagesBookmarksUpdateColumn!]!
+  where: AddImagesBookmarksBoolExp
+}
+
+input AddImagesImagesArrRelInsertInput {
+  data: [AddImagesImagesInsertInput!]!
+  on_conflict: AddImagesImagesOnConflict
+}
+
+input AddImagesImagesOnConflict {
+  constraint: AddImagesImagesConstraint!
+  update_columns: [AddImagesImagesUpdateColumn!]!
+  where: AddImagesImagesBoolExp
+}
+
+input AddImagesLocationsObjRelInsertInput {
+  data: AddImagesLocationsInsertInput!
+  on_conflict: AddImagesLocationsOnConflict
+}
+
+input AddImagesLocationsInsertInput {
+  city: String
+  created_at: timestamptz
+  events: AddImagesEventsArrRelInsertInput
+  id: Int
+  latitude: float8
+  longtiude: float8
+  updated_at: timestamptz
+  venue: String
+}
+
+input AddImagesLocationsOnConflict {
+  constraint: AddImagesLocationsConstraint!
+  update_columns: [AddImagesLocationsUpdateColumn!]!
+  where: AddImagesLocationsBoolExp
+}
+
+input AddImagesTagsArrRelInsertInput {
+  data: [AddImagesTagsInsertInput!]!
+  on_conflict: AddImagesTagsOnConflict
+}
+
+input AddImagesTagsInsertInput {
+  created_at: timestamptz
+  event: AddImagesEventsObjRelInsertInput
+  event_id: Int
+  id: Int
+  name: String
+  updated_at: timestamptz
+}
+
+input AddImagesTagsOnConflict {
+  constraint: AddImagesTagsConstraint!
+  update_columns: [AddImagesTagsUpdateColumn!]!
+  where: AddImagesTagsBoolExp
+}
+
+input tickets_input {
+  description: String
+  price: float8!
+  ticket_type: String!
+}
+
+type RegisterOutput {
+  token: String!
+}
+
+type SearchUserOutput {
+  email: String!
+  first_name: String!
+  id: Int!
+  last_name: String!
+  password: String!
+  phone_number: String!
+}
+
+type LoginOutput {
+  token: String!
+}
+
+type CreateEventOutput {
+  description: String!
+  end_date: date!
+  id: Int!
+  thumbnail: String!
+  start_date: date!
+  title: String!
+}
+
+type CreateLocationOutput {
+  city: String!
+  id: Int!
+  venue: String!
+}
+
+type CreateTagOutput {
+  id: Int!
+  name: String!
+}
+
+type UsersDerivedOutput {
+  id: Int!
+}
+
+type UpdateLocationOutput {
+  city: String!
+  id: Int!
+  venue: String!
+}
+
+type UpdateEventOutput {
+  title: String!
+}
+
+type insert_tags_inputs {
+  event_id: Int!
+  name: String!
+}
+
+type GetUserByIdOutput {
+  email: String!
+  first_name: String!
+  last_name: String!
+}
+
+type CreateImageOutput {
+  id: Int!
+  url: String!
+}
+
+type AddImagesOutput {
+  affected_rows: Int!
+}
+
+type AddTicketOutput {
+  id: Int!
+}
+
+type ReserveEventOutput {
+  id: Int!
+  checkoutUrl: String!
+}
+
+type GetTicketByIdOutput {
+  price: float8!
+}
+
+type CreatePaymentOutput {
+  id: Int!
+}
+
+type GetEventByIdOutput {
+  description: String!
+  end_date: date!
+  id: Int!
+  start_date: date!
+  thumbnail: String!
+  title: String!
+  user_id: Int!
+}
+
+type GetReservationOutput {
+  id: Int!
+}
+

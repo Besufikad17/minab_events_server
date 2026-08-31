@@ -1,0 +1,97 @@
+table:
+  name: reservations
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: ticket
+    using:
+      foreign_key_constraint_on: ticket_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - event_id
+        - id
+        - ticket_id
+        - user_id
+        - status
+        - created_at
+        - updated_at
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - event_id
+        - id
+        - ticket_id
+        - user_id
+        - status
+        - created_at
+        - updated_at
+      filter:
+        _or:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - event:
+              user_id:
+                _eq: X-Hasura-User-Id
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - event_id
+        - id
+        - ticket_id
+        - user_id
+        - status
+        - created_at
+        - updated_at
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+event_triggers:
+  - name: onReservationUpdated
+    definition:
+      enable_manual: false
+      update:
+        columns:
+          - status
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: http://172.17.0.1:5000/events/Reserved
+    request_transform:
+      body:
+        action: transform
+        template: |-
+          {
+            "input": {
+              "id": {{$body.event.data.old.id}},
+              "user_id": {{$body.event.data.old.user_id}},
+              "event_id": {{$body.event.data.old.event_id}},
+              "ticket_id": {{$body.event.data.old.ticket_id}},
+              "status": {{$body.event.data.new.status}}
+            },
+            "session_variables": {}
+          }
+      template_engine: Kriti
+      version: 2

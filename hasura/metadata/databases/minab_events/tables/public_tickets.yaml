@@ -1,0 +1,88 @@
+table:
+  name: tickets
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+array_relationships:
+  - name: payments
+    using:
+      foreign_key_constraint_on:
+        column: ticket_id
+        table:
+          name: payments
+          schema: public
+  - name: reservations
+    using:
+      foreign_key_constraint_on:
+        column: ticket_id
+        table:
+          name: reservations
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        event:
+          user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - price
+        - event_id
+        - id
+        - description
+        - ticket_type
+        - created_at
+        - updated_at
+    comment: ""
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - price
+        - event_id
+        - id
+        - description
+        - ticket_type
+        - created_at
+        - updated_at
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - price
+        - event_id
+        - id
+        - description
+        - ticket_type
+        - created_at
+        - updated_at
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - price
+        - event_id
+        - id
+        - description
+        - ticket_type
+        - created_at
+        - updated_at
+      filter:
+        event:
+          user_id:
+            _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        event:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""

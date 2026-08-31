@@ -1,0 +1,60 @@
+table:
+  name: users
+  schema: public
+array_relationships:
+  - name: bookmarks
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: bookmarks
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: events
+          schema: public
+  - name: payments
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: payments
+          schema: public
+  - name: reservations
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: reservations
+          schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - id
+        - email
+        - first_name
+        - last_name
+        - password
+        - phone_number
+        - created_at
+        - updated_at
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - email
+        - first_name
+        - id
+        - last_name
+        - password
+        - phone_number
+        - updated_at
+      filter: {}
+    comment: ""

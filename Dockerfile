@@ -1,20 +1,19 @@
-# Use the official Golang image as the base image
-FROM golang:1.22.1
+FROM hasura/graphql-engine:v2.30.1.cli-migrations-v3
 
-# Set the Current Working Directory inside the container
-WORKDIR /app
+COPY ./hasura/migrations /hasura-migrations
+COPY ./hasura/metadata /hasura-metadata
 
-# Copy go mod and sum files
-COPY go.mod go.sum ./
-
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
-RUN go mod download
-
-# Copy the source from the current directory to the working Directory inside the container
-COPY . .
-
-# Build the Go app with server.go as the entry point
-RUN go build -o main server.go
-
-# Expose port 8080 to the outside world
-EXPOSE 5000
+ENV HASURA_GRAPHQL_ENABLE_CONSOLE ${HASURA_GRAPHQL_ENABLE_CONSOLE}
+ENV HASURA_GRAPHQL_ENABLED_LOG_TYPES ${HASURA_GRAPHQL_ENABLED_LOG_TYPES}
+ENV HASURA_GRAPHQL_ENABLE_TELEMETRY ${HASURA_GRAPHQL_ENABLE_TELEMETRY}
+ENV HASURA_GRAPHQL_LOG_LEVEL ${HASURA_GRAPHQL_LOG_LEVEL}
+ENV HASURA_GRAPHQL_DEV_MODE ${HASURA_GRAPHQL_DEV_MODE}
+ENV HASURA_GRAPHQL_DATABASE_URL ${HASURA_GRAPHQL_DATABASE_URL}
+ENV HASURA_GRAPHQL_ADMIN_SECRET ${HASURA_GRAPHQL_ADMIN_SECRET}
+ENV HASURA_GRAPHQL_JWT_SECRET ${HASURA_GRAPHQL_JWT_SECRET}
+ENV HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT ${HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT}
+ENV ACTION_CONTROLLER_URL ${ACTION_CONTROLLER_URL}
+CMD graphql-engine \
+    --database-url $HASURA_GRAPHQL_DATABASE_URL \
+    serve \
+    --server-port 9691

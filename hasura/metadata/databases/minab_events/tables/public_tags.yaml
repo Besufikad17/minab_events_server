@@ -1,0 +1,50 @@
+table:
+  name: tags
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        event:
+          user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - event_id
+        - id
+        - name
+        - created_at
+        - updated_at
+    comment: ""
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - event_id
+        - id
+        - name
+        - created_at
+        - updated_at
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - event_id
+        - id
+        - name
+        - created_at
+        - updated_at
+      filter: {}
+    comment: ""
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        event:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
