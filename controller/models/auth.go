@@ -1,8 +1,8 @@
 package models
 
 type LoginActionPayload struct {
-	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            LoginArgs              `json:"input"`
+	SessionVariables SessionVariables `json:"session_variables"`
+	Input            LoginArgs        `json:"input"`
 }
 
 type LoginArgs struct {

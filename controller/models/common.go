@@ -1,10 +1,3 @@
 package models
 
-type GraphQLError struct {
-	Message string `json:"message"`
-}
-
-type GraphQLRequest struct {
-	Query     string         `json:"query"`
-	Variables map[string]any `json:"variables"`
-}
+type SessionVariables map[string]any

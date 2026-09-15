@@ -8,9 +8,10 @@ import (
 	actions "github.com/Besufikad17/minab_events/hasura/actions"
 	models "github.com/Besufikad17/minab_events/models"
 	helpers "github.com/Besufikad17/minab_events/utils/helpers"
+	"github.com/julienschmidt/httprouter"
 )
 
-func RegisterHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.Header().Set("Content-Type", "application/json")
 
 	reqBody, err := io.ReadAll(r.Body)
